@@ -29,3 +29,24 @@ body {
   background: var(--white);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Navbar */
+ul li a {
+  display: block;
+  transition: 0.5s;
+}
+
+/* Apply hover effects only on screens larger than 768px */
+@media (min-width: 1024px) {
+  /* Hover effect: other links fade */
+  ul:hover li a {
+    opacity: 0.7;
+  }
+
+  /* Hover effect: hovered link scales up */
+  ul li a:hover {
+    color: var(--text-hover);
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}

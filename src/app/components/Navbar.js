@@ -10,7 +10,10 @@ const Navbar = () => {
     <nav className="bg-[var(--peach)] p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-[var(--text-dark)] text-xl font-bold">
+        <Link
+          href="/"
+          className="text-[var(--text-dark)] text-xl font-bold hover:text-[var(--text-hover)] "
+        >
           Booking System
         </Link>
 
@@ -28,7 +31,7 @@ const Navbar = () => {
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
-                className="text-[var(--text-dark)] text-lg transition-colors duration-300 hover:text-[var(--text-hover)]"
+                className="text-[var(--text-dark)] text-lg hover:text-[var(--text-hover)]"
               >
                 {item}
               </Link>
@@ -44,7 +47,7 @@ const Navbar = () => {
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
-                className="text-[var(--text-dark)] text-lg transition-colors duration-300 hover:text-[var(--text-hover)]"
+                className="text-[var(--text-dark)] text-lg hover:text-[var(--text-hover)]"
                 onClick={() => setIsOpen(false)}
               >
                 {item}
