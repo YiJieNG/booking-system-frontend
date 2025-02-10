@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
   return (
-    <nav className="bg-[var(--peach)] p-4">
+    <nav className="bg-[var(--peach)] p-4 items-center justify-between">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link
