@@ -5,17 +5,27 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* colour palatte */
+  --white: #fafaeb;
+  --pink: #f3e4f1;
+  --green: #d5ebda;
+  --peach: #f4dacd;
+  --rose: #ead3d4;
+
+  --text-dark: #4a4a4a;
+  --text-hover: #8b5e66;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* --background: #0a0a0a;
+    --foreground: #ededed; */
   }
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--white);
   font-family: Arial, Helvetica, sans-serif;
 }
