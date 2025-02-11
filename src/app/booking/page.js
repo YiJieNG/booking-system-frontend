@@ -1,9 +1,33 @@
-import TimeSlotPicker from "../components/picker";
+"use client";
+
+import { ContinuousCalendar } from "../components/ContinuousCalendar";
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export default function Booking() {
+  const onClickHandler = (day, month, year) => {
+    const snackMessage = `Clicked on ${monthNames[month]} ${day}, ${year}`;
+    console.log(snackMessage);
+  };
+
   return (
-    <div className="flex flex-grow justify-center items-center">
-      <TimeSlotPicker />
+    <div className="relative flex h-screen max-h-screen w-full flex-col gap-4 px-4 pt-4 items-center justify-center">
+      <div className="relative h-full w-4/6 overflow-auto mt-20">
+        <ContinuousCalendar onClick={onClickHandler} />
+      </div>
     </div>
   );
 }
