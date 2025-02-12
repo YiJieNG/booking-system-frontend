@@ -1,6 +1,6 @@
 export default function Custom404() {
   return (
-    <div className="flex flex-col items-center justify-center w-full text-[var(--text-dark)]">
+    <div className="flex flex-col items-center justify-center w-full h-full min-h-[80vh] text-[var(--text-dark)]">
       <h1 className="text-6xl font-bold">404</h1>
       <p className="text-xl mt-2">Page Not Found</p>
       <a

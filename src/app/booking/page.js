@@ -24,8 +24,8 @@ export default function Booking() {
   };
 
   return (
-    <div className="relative flex h-screen max-h-screen w-full flex-col gap-4 px-4 pt-4 items-center justify-center">
-      <div className="relative h-full w-4/6 overflow-auto mt-20">
+    <div className="h-full w-full p-4">
+      <div className="h-full w-full max-w-3xl mx-auto">
         <MonthlyCalendar onClick={onClickHandler} />
       </div>
     </div>
