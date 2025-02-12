@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const daysOfWeek = {
+  short: ["S", "M", "T", "W", "T", "F", "S"],
+  medium: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+};
 const monthNames = [
   "January",
   "February",
@@ -51,7 +54,7 @@ export const MonthlyCalendar = ({ onClick }) => {
     }
 
     // Next month's days
-    const remainingDays = 35 - days.length; // Always show 5 weeks
+    const remainingDays = 42 - days.length; // Always show 6 weeks
     for (let day = 1; day <= remainingDays; day++) {
       days.push({
         day,
@@ -95,7 +98,7 @@ export const MonthlyCalendar = ({ onClick }) => {
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
 
   return (
-    <div className="rounded-t-2xl bg-white pb-10 text-slate-800 shadow-xl">
+    <div className="rounded-t-2xl bg-white pb-6 text-slate-800 shadow-xl max-w-3xl mx-auto">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl bg-white px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
           <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -166,18 +169,21 @@ export const MonthlyCalendar = ({ onClick }) => {
           </div>
         </div>
         <div className="grid w-full grid-cols-7 justify-between text-slate-500">
-          {daysOfWeek.map((day, index) => (
+          {daysOfWeek.short.map((day, index) => (
             <div
               key={index}
-              className="w-full border-b border-slate-200 py-2 text-center font-semibold"
+              className="w-full border-b border-slate-200 py-2 text-center text-sm font-semibold"
             >
-              {day}
+              <span className="sm:hidden">{daysOfWeek.short[index]}</span>
+              <span className="hidden sm:inline">
+                {daysOfWeek.medium[index]}
+              </span>
             </div>
           ))}
         </div>
       </div>
       <div className="w-full px-5 pt-4 sm:px-8 sm:pt-6">
-        <div className="grid grid-cols-7 gap-px">
+        <div className="grid grid-cols-7 gap-1">
           {monthDays.map(({ day, month, year, isCurrentMonth }, index) => {
             const isToday =
               today.getDate() === day &&
@@ -188,11 +194,11 @@ export const MonthlyCalendar = ({ onClick }) => {
               <div
                 key={index}
                 onClick={() => onClick?.(day, month, year)}
-                className={`relative z-10 m-[-0.5px] group aspect-square w-full grow cursor-pointer rounded-xl border font-medium transition-all hover:z-20 hover:border-cyan-400
-                  ${!isCurrentMonth ? "opacity-40" : ""}`}
+                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 cursor-pointer rounded-lg border font-medium transition-all hover:z-20 hover:border-cyan-400
+                  ${!isCurrentMonth ? "opacity-20" : ""}`}
               >
                 <span
-                  className={`absolute left-1 top-1 flex size-5 items-center justify-center rounded-full text-xs sm:size-6 sm:text-sm lg:left-2 lg:top-2 lg:size-8 lg:text-base 
+                  className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
                     ${
                       isToday
                         ? "bg-blue-500 font-semibold text-white"
