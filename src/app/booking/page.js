@@ -1,6 +1,9 @@
+// app/booking/page.jsx
 "use client";
 
+import { useState } from "react";
 import { MonthlyCalendar } from "../components/MonthlyCalendar";
+import { TimeSlotSelector } from "../components/TimeSlotSelector";
 
 const monthNames = [
   "January",
@@ -18,15 +21,32 @@ const monthNames = [
 ];
 
 export default function Booking() {
+  const [selectedDate, setSelectedDate] = useState(null);
+
   const calendarDayOnClickHandler = (day, month, year) => {
-    const snackMessage = `Clicked on ${monthNames[month]} ${day}, ${year}`;
-    console.log(snackMessage);
+    const dateString = `${monthNames[month]} ${day}, ${year}`;
+    setSelectedDate(dateString);
+  };
+
+  const handleTimeSelection = (time) => {
+    console.log(`Selected time: ${time} on ${selectedDate}`);
+    // Here you would typically handle the booking logic
   };
 
   return (
     <div className="h-full w-full p-4">
-      <div className="h-full w-full max-w-3xl mx-auto">
-        <MonthlyCalendar onClick={calendarDayOnClickHandler} />
+      <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto gap-5">
+        <div className="w-full md:max-w-3xl">
+          <MonthlyCalendar onClick={calendarDayOnClickHandler} />
+        </div>
+        {selectedDate && (
+          <div className="w-full md:max-w-3xl">
+            <TimeSlotSelector
+              selectedDate={selectedDate}
+              onSelectTime={handleTimeSelection}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
