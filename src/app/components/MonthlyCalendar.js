@@ -98,7 +98,7 @@ export const MonthlyCalendar = ({ onClick }) => {
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
 
   return (
-    <div className="rounded-2xl bg-white pb-6 text-slate-800 shadow-xl max-w-3xl mx-auto">
+    <div className="rounded-2xl bg-white pb-6 text-slate-800 shadow-xl mx-auto">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl bg-white px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
           <button

@@ -1,7 +1,6 @@
 // components/TimeSlotSelector.jsx
 import React from "react";
 
-// Mock time slots - in a real app, these would likely come from an API
 const generateTimeSlots = () => {
   const slots = [];
   for (let hour = 9; hour <= 17; hour++) {
@@ -12,9 +11,9 @@ const generateTimeSlots = () => {
 
 export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
   const timeSlots = generateTimeSlots();
-  //   rounded-2xl bg-white pb-6 text-slate-800 shadow-xl max-w-3xl mx-auto
+
   return (
-    <div className="h-full rounded-2xl bg-white pb-6 text-slate-800 shadow-xl transition-all duration-300 ease-in-out">
+    <div className="transform transition-all duration-500 ease-in-out rounded-2xl bg-white pb-6 text-slate-800 shadow-xl h-full">
       <div className="p-6 border-b">
         <h2 className="text-lg font-semibold">
           Available Times for {selectedDate}
