@@ -33,7 +33,7 @@ const makeBooking = async (day, month, year) => {
       data
     );
   } catch (error) {
-    console.error("Error fetching questions:", error);
+    console.error("Error to book a session:", error);
   }
 };
 
