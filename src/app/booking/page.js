@@ -18,7 +18,7 @@ const monthNames = [
 ];
 
 export default function Booking() {
-  const onClickHandler = (day, month, year) => {
+  const calendarDayOnClickHandler = (day, month, year) => {
     const snackMessage = `Clicked on ${monthNames[month]} ${day}, ${year}`;
     console.log(snackMessage);
   };
@@ -26,7 +26,7 @@ export default function Booking() {
   return (
     <div className="h-full w-full p-4">
       <div className="h-full w-full max-w-3xl mx-auto">
-        <MonthlyCalendar onClick={onClickHandler} />
+        <MonthlyCalendar onClick={calendarDayOnClickHandler} />
       </div>
     </div>
   );
