@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MonthlyCalendar } from "../components/MonthlyCalendar";
 import { TimeSlotSelector } from "../components/TimeSlotSelector";
+import axios from "axios";
 
 const monthNames = [
   "January",
@@ -18,6 +19,25 @@ const monthNames = [
   "November",
   "December",
 ];
+
+const makeBooking = async (day, month, year) => {
+  try {
+    console.log(day + "-" + month + "-" + year);
+    // const response = await axios.get("https://www./api/questions");
+    const data = {
+      bkg_date: "2025-07-12",
+      bkg_time: "12:00:00",
+      phone: "0123456789",
+      email: "wassup@gmail.com",
+    };
+    const response = await axios.post(
+      "http://127.0.0.1:5000/api/makeBooking",
+      data
+    );
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+  }
+};
 
 export default function Booking() {
   const [selectedDate, setSelectedDate] = useState(null);
