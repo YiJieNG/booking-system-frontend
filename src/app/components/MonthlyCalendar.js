@@ -100,25 +100,15 @@ export const MonthlyCalendar = ({ onClick }) => {
   return (
     <div className="rounded-2xl bg-white pb-6 text-slate-800 shadow-xl max-w-3xl mx-auto">
       <div className="sticky -top-px z-50 w-full rounded-t-2xl bg-white px-5 pt-7 sm:px-8 sm:pt-8">
-        <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-6">
+        <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
+          <button
+            onClick={handleTodayClick}
+            type="button"
+            className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 lg:px-5 lg:py-2.5"
+          >
+            Today
+          </button>
           <div className="flex flex-wrap gap-2 sm:gap-3">
-            <Select
-              value={`${currentDate.month}`}
-              options={monthNames.map((month, index) => ({
-                name: month,
-                value: `${index}`,
-              }))}
-              onChange={handleMonthChange}
-            />
-            <button
-              onClick={handleTodayClick}
-              type="button"
-              className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-900 hover:bg-gray-100 lg:px-5 lg:py-2.5"
-            >
-              Today
-            </button>
-          </div>
-          <div className="flex w-fit items-center justify-between">
             <button
               onClick={handlePrevMonth}
               className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
@@ -141,9 +131,14 @@ export const MonthlyCalendar = ({ onClick }) => {
                 />
               </svg>
             </button>
-            <h1 className="min-w-16 text-center text-lg font-semibold sm:min-w-20 sm:text-xl">
-              {currentDate.year}
-            </h1>
+            <Select
+              value={`${currentDate.month}`}
+              options={monthNames.map((month, index) => ({
+                name: month,
+                value: `${index}`,
+              }))}
+              onChange={handleMonthChange}
+            />
             <button
               onClick={handleNextMonth}
               className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
@@ -167,6 +162,9 @@ export const MonthlyCalendar = ({ onClick }) => {
               </svg>
             </button>
           </div>
+          <h1 className="min-w-16 text-center text-lg font-semibold sm:min-w-20 sm:text-xl">
+            {currentDate.year}
+          </h1>
         </div>
         <div className="grid w-full grid-cols-7 justify-between text-slate-500">
           {daysOfWeek.short.map((day, index) => (
