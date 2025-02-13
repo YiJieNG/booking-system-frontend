@@ -5,6 +5,8 @@ import { MonthlyCalendar } from "../components/MonthlyCalendar";
 import { TimeSlotSelector } from "../components/TimeSlotSelector";
 import axios from "axios";
 
+const moment = require("moment");
+
 const monthNames = [
   "January",
   "February",
@@ -43,13 +45,20 @@ export default function Booking() {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const calendarDayOnClickHandler = (day, month, year) => {
-    const dateString = `${monthNames[month]} ${day}, ${year}`;
-    setSelectedDate(dateString);
+    const date = { year: year, month: month, day: day };
+    setSelectedDate(date);
   };
 
   const handleTimeSelection = (time) => {
-    console.log(`Selected time: ${time} on ${selectedDate}`);
-    // Here you would typically handle the booking logic
+    const dateObject = new Date(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      time
+    );
+
+    const dateString = moment(dateObject).utcOffset(0, true).format();
+    console.log("Date string: ", dateString);
   };
 
   return (
@@ -76,7 +85,9 @@ export default function Booking() {
           >
             {selectedDate && (
               <TimeSlotSelector
-                selectedDate={selectedDate}
+                selectedDate={`${monthNames[selectedDate.month]} ${
+                  selectedDate.day
+                }, ${selectedDate.year}`}
                 onSelectTime={handleTimeSelection}
               />
             )}

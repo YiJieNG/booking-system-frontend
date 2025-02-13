@@ -4,7 +4,7 @@ import React from "react";
 const generateTimeSlots = () => {
   const slots = [];
   for (let hour = 9; hour <= 17; hour++) {
-    slots.push(`${hour}:00`);
+    slots.push(`${hour}`);
   }
   return slots;
 };
@@ -37,7 +37,7 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
                 <circle cx="12" cy="12" r="10" strokeWidth="2" />
                 <path strokeWidth="2" d="M12 6v6l4 4" />
               </svg>
-              {time}
+              {`${time}:00`}
             </button>
           ))}
         </div>
