@@ -3,19 +3,59 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* colour palatte */
+  --white: #fafaeb;
+  --pink: #f3e4f1;
+  --green: #d5ebda;
+  --peach: #f4dacd;
+  --rose: #ead3d4;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --text-dark: #4a4a4a;
+  --text-hover: #8b5e66;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background: var(--white);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Navbar */
+ul li a {
+  display: block;
+  transition: 0.5s;
+}
+
+/* Apply hover effects only on screens larger than 768px */
+@media (min-width: 1024px) {
+  /* Hover effect: other links fade */
+  ul:hover li a {
+    opacity: 0.7;
+  }
+
+  /* Hover effect: hovered link scales up */
+  ul li a:hover {
+    color: var(--text-hover);
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 1px;
+  text-overflow: "";
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
