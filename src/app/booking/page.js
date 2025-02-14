@@ -22,13 +22,12 @@ const monthNames = [
   "December",
 ];
 
-const makeBooking = async (day, month, year) => {
+const makeBooking = async (date, time) => {
   try {
-    console.log(day + "-" + month + "-" + year);
     // const response = await axios.get("https://www./api/questions");
     const data = {
-      bkg_date: "2025-07-12",
-      bkg_time: "12:00:00",
+      bkg_date: date,
+      bkg_time: time,
       phone: "0123456789",
       email: "wassup@gmail.com",
     };
@@ -58,7 +57,10 @@ export default function Booking() {
     );
 
     const dateString = moment(dateObject).utcOffset(0, true).format();
-    console.log("Date string: ", dateString);
+    // console.log("Date string: ", dateString);
+    // console.log("Sliced Date string: ", dateString.slice(0, 10));
+    // console.log("Sliced Time string: ", dateString.slice(11, 19));
+    makeBooking(dateString.slice(0, 10), dateString.slice(11, 19));
   };
 
   return (
