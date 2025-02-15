@@ -75,10 +75,8 @@ export const DetailsForm = ({ date, time, onClose }) => {
           formData.familyName
         );
         setIsSuccess(true);
-        // You might want to add success notification here
       } catch (error) {
         console.error("Error submitting form:", error);
-        // You might want to add error notification here
       } finally {
         setIsSubmitting(false);
       }
