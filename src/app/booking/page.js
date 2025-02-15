@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MonthlyCalendar } from "../components/MonthlyCalendar";
 import { TimeSlotSelector } from "../components/TimeSlotSelector";
+import { DetailsForm } from "../components/DetailsForm";
 import axios from "axios";
 
 const moment = require("moment");
@@ -22,27 +23,11 @@ const monthNames = [
   "December",
 ];
 
-const makeBooking = async (day, month, year) => {
-  try {
-    console.log(day + "-" + month + "-" + year);
-    // const response = await axios.get("https://www./api/questions");
-    const data = {
-      bkg_date: "2025-07-12",
-      bkg_time: "12:00:00",
-      phone: "0123456789",
-      email: "wassup@gmail.com",
-    };
-    const response = await axios.post(
-      "http://127.0.0.1:5000/api/makeBooking",
-      data
-    );
-  } catch (error) {
-    console.error("Error fetching questions:", error);
-  }
-};
-
 export default function Booking() {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDateString, setSelectedDateString] = useState("");
 
   const calendarDayOnClickHandler = (day, month, year) => {
     const date = { year: year, month: month, day: day };
@@ -58,7 +43,11 @@ export default function Booking() {
     );
 
     const dateString = moment(dateObject).utcOffset(0, true).format();
-    console.log("Date string: ", dateString);
+    // pass dateString to bookingDetails
+    // console.log("Date string: ", dateString);
+    setSelectedTime(time);
+    setSelectedDateString(dateString);
+    setShowModal(true);
   };
 
   return (
@@ -92,6 +81,20 @@ export default function Booking() {
               />
             )}
           </div>
+
+          {/* Modal Overlay */}
+          {showModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+              {/* Modal Content */}
+              <div className="max-w-md w-full">
+                <DetailsForm
+                  date={selectedDateString.slice(0, 10)}
+                  time={selectedDateString.slice(11, 19)}
+                  onClose={() => setShowModal(false)}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
