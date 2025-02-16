@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MonthlyCalendar } from "../components/MonthlyCalendar";
 import { TimeSlotSelector } from "../components/TimeSlotSelector";
 import { DetailsForm } from "../components/DetailsForm";
@@ -28,6 +28,20 @@ export default function Booking() {
   const [showModal, setShowModal] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDateString, setSelectedDateString] = useState("");
+
+  // Prevent scrolling when the modal is opened
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden"; // Disable scroll
+    } else {
+      document.body.style.overflow = "auto"; // Enable scroll
+    }
+
+    // Cleanup when the component is unmounted or modal state changes
+    return () => {
+      document.body.style.overflow = "auto"; // Ensure it's reset when the component unmounts
+    };
+  }, [showModal]);
 
   const calendarDayOnClickHandler = (day, month, year) => {
     const date = { year: year, month: month, day: day };
