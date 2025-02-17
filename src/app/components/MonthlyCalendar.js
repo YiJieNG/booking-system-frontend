@@ -68,10 +68,17 @@ export const MonthlyCalendar = ({ onClick }) => {
   };
 
   const handlePrevMonth = () => {
-    setCurrentDate((prev) => ({
-      year: prev.month === 0 ? prev.year - 1 : prev.year,
-      month: prev.month === 0 ? 11 : prev.month - 1,
-    }));
+    // Only allow going to previous month if it's not before the current month
+    const prevMonth = currentDate.month === 0 ? 11 : currentDate.month - 1;
+    const prevYear =
+      currentDate.month === 0 ? currentDate.year - 1 : currentDate.year;
+
+    if (
+      prevYear > today.getFullYear() ||
+      (prevYear === today.getFullYear() && prevMonth >= today.getMonth())
+    ) {
+      setCurrentDate({ month: prevMonth, year: prevYear });
+    }
   };
 
   const handleNextMonth = () => {
@@ -82,10 +89,17 @@ export const MonthlyCalendar = ({ onClick }) => {
   };
 
   const handleMonthChange = (event) => {
-    setCurrentDate((prev) => ({
-      ...prev,
-      month: parseInt(event.target.value, 10),
-    }));
+    const newMonth = parseInt(event.target.value, 10);
+    // Only allow changing to months not before the current month
+    if (
+      currentDate.year > today.getFullYear() ||
+      (currentDate.year === today.getFullYear() && newMonth >= today.getMonth())
+    ) {
+      setCurrentDate((prev) => ({
+        ...prev,
+        month: newMonth,
+      }));
+    }
   };
 
   const handleTodayClick = () => {
@@ -95,7 +109,25 @@ export const MonthlyCalendar = ({ onClick }) => {
     });
   };
 
+  const isDateDisabled = (day, month, year) => {
+    const date = new Date(year, month, day);
+    const todayDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
+    return date < todayDate;
+  };
+
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
+
+  // Filter available months for the select dropdown
+  const availableMonths = monthNames.map((month, index) => ({
+    name: month,
+    value: `${index}`,
+    disabled:
+      currentDate.year === today.getFullYear() && index < today.getMonth(),
+  }));
 
   return (
     <div className="rounded-2xl bg-white pb-6 text-slate-800 shadow-xl mx-auto">
@@ -111,7 +143,17 @@ export const MonthlyCalendar = ({ onClick }) => {
           <div className="flex flex-wrap gap-2 sm:gap-3">
             <button
               onClick={handlePrevMonth}
-              className="rounded-full border border-slate-300 p-1 transition-colors hover:bg-slate-100 sm:p-2"
+              disabled={
+                currentDate.year === today.getFullYear() &&
+                currentDate.month === today.getMonth()
+              }
+              className={`rounded-full border border-slate-300 p-1 transition-colors sm:p-2 
+                ${
+                  currentDate.year === today.getFullYear() &&
+                  currentDate.month === today.getMonth()
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-slate-100"
+                }`}
             >
               <svg
                 className="size-5 text-slate-800"
@@ -133,10 +175,7 @@ export const MonthlyCalendar = ({ onClick }) => {
             </button>
             <Select
               value={`${currentDate.month}`}
-              options={monthNames.map((month, index) => ({
-                name: month,
-                value: `${index}`,
-              }))}
+              options={availableMonths}
               onChange={handleMonthChange}
             />
             <button
@@ -188,12 +227,19 @@ export const MonthlyCalendar = ({ onClick }) => {
               today.getMonth() === month &&
               today.getFullYear() === year;
 
+            const disabled = isDateDisabled(day, month, year);
+
             return (
               <div
                 key={index}
-                onClick={() => onClick?.(day, month, year)}
-                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 cursor-pointer rounded-lg border font-medium transition-all hover:z-20 hover:border-cyan-400
-                  ${!isCurrentMonth ? "opacity-20" : ""}`}
+                onClick={() => !disabled && onClick?.(day, month, year)}
+                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 rounded-lg border font-medium transition-all
+                  ${!isCurrentMonth ? "opacity-20" : ""}
+                  ${
+                    disabled
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer hover:z-20 hover:border-cyan-400"
+                  }`}
               >
                 <span
                   className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
@@ -237,7 +283,11 @@ export const Select = ({
       required
     >
       {options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option
+          key={option.value}
+          value={option.value}
+          disabled={option.disabled}
+        >
           {option.name}
         </option>
       ))}

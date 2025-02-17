@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { MonthlyCalendar } from "../components/MonthlyCalendar";
 import { TimeSlotSelector } from "../components/TimeSlotSelector";
 import { DetailsForm } from "../components/DetailsForm";
-import axios from "axios";
 
 const moment = require("moment");
 
@@ -58,7 +57,6 @@ export default function Booking() {
 
     const dateString = moment(dateObject).utcOffset(0, true).format();
     // pass dateString to bookingDetails
-    // console.log("Date string: ", dateString);
     setSelectedTime(time);
     setSelectedDateString(dateString);
     setShowModal(true);
