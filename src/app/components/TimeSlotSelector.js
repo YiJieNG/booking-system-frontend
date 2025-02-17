@@ -1,4 +1,3 @@
-// components/TimeSlotSelector.jsx
 import React from "react";
 
 const generateTimeSlots = () => {
@@ -13,22 +12,22 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="transform transition-all duration-500 ease-in-out rounded-2xl bg-white pb-6 text-slate-800 shadow-xl h-full">
-      <div className="p-6 border-b">
-        <h2 className="text-lg font-semibold">
+    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl h-full">
+      <div className="sticky -top-px z-10 w-full rounded-t-2xl bg-[--pink] px-5 pt-7 border-b border-[--rose] pb-4 sm:px-8 sm:pt-8">
+        <h2 className="text-lg font-semibold sm:text-xl">
           Available Times for {selectedDate}
         </h2>
       </div>
-      <div className="p-6">
+      <div className="w-full px-5 pt-4 sm:px-8 sm:pt-6">
         <div className="grid grid-cols-2 gap-2">
           {timeSlots.map((time) => (
             <button
               key={time}
-              className="flex items-center justify-center gap-2 py-6 px-4 border rounded-md hover:bg-gray-50 active:bg-gray-100 transition-colors"
+              className="group relative h-12 sm:h-14 rounded-lg border border-[--rose] bg-[--peach] font-medium transition-all hover:z-20 hover:border-[--text-hover] hover:bg-[--green] flex items-center justify-center gap-2"
               onClick={() => onSelectTime(time)}
             >
               <svg
-                className="w-4 h-4"
+                className="w-4 h-4 text-[--text-dark]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -37,7 +36,9 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
                 <circle cx="12" cy="12" r="10" strokeWidth="2" />
                 <path strokeWidth="2" d="M12 6v6l4 4" />
               </svg>
-              {`${time}:00`}
+              <span className="font-semibold text-[--text-dark]">
+                {`${time}:00`}
+              </span>
             </button>
           ))}
         </div>
@@ -45,3 +46,5 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
     </div>
   );
 };
+
+export default TimeSlotSelector;
