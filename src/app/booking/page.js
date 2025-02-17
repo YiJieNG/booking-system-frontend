@@ -73,7 +73,10 @@ export default function Booking() {
               selectedDate ? "md:w-2/3" : "md:w-full"
             }`}
           >
-            <MonthlyCalendar onClick={calendarDayOnClickHandler} />
+            <MonthlyCalendar
+              onClick={calendarDayOnClickHandler}
+              selectedDate={selectedDate}
+            />
           </div>
 
           {/* Time slot selector container */}

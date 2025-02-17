@@ -19,7 +19,7 @@ const monthNames = [
   "December",
 ];
 
-export const MonthlyCalendar = ({ onClick }) => {
+export const MonthlyCalendar = ({ onClick, selectedDate }) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState({
     month: today.getMonth(),
@@ -117,6 +117,15 @@ export const MonthlyCalendar = ({ onClick }) => {
       today.getDate()
     );
     return date < todayDate;
+  };
+
+  const isDateSelected = (day, month, year) => {
+    return (
+      selectedDate &&
+      selectedDate.day === day &&
+      selectedDate.month === month &&
+      selectedDate.year === year
+    );
   };
 
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
@@ -228,12 +237,18 @@ export const MonthlyCalendar = ({ onClick }) => {
               today.getFullYear() === year;
 
             const disabled = isDateDisabled(day, month, year);
+            const selected = isDateSelected(day, month, year);
 
             return (
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
-                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 rounded-lg border border-[--rose] font-medium transition-all bg-[--peach]
+                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 rounded-lg border border-[--rose] font-medium transition-all 
+                  ${
+                    selected
+                      ? "bg-[--emerald] hover:bg-[--green]"
+                      : "bg-[--peach]"
+                  }
                   ${!isCurrentMonth ? "opacity-30" : ""}
                   ${
                     disabled
