@@ -100,21 +100,21 @@ export const DetailsForm = ({ date, time, onClose }) => {
 
   if (isSuccess) {
     return (
-      <div className="transform transition-all duration-500 ease-in-out rounded-2xl bg-white pb-6 text-slate-800 shadow-xl h-full relative">
+      <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl h-full relative">
         <div className="p-6 flex flex-col items-center justify-center space-y-4">
-          <CheckCircle2 className="w-16 h-16 text-green-500" />
+          <CheckCircle2 className="w-16 h-16 text-[--emerald]" />
           <h2 className="text-2xl font-semibold text-center">
             Booking Confirmed!
           </h2>
-          <p className="text-gray-600 text-center">
+          <p className="text-[--text-dark] text-center">
             Your session has been successfully booked for {time} on {date}
           </p>
-          <p className="text-gray-600 text-center">
+          <p className="text-[--text-dark] text-center">
             A confirmation email will be sent to {formData.email}
           </p>
           <button
             onClick={onClose}
-            className="mt-4 w-full max-w-xs bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+            className="mt-4 w-full max-w-xs bg-[--peach] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--rose] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200"
           >
             Close
           </button>
@@ -124,11 +124,11 @@ export const DetailsForm = ({ date, time, onClose }) => {
   }
 
   return (
-    <div className="transform transition-all duration-500 ease-in-out rounded-2xl bg-white pb-6 text-slate-800 shadow-xl h-full relative">
+    <div className="rounded-2xl bg-[--pink] text-[--text-dark] shadow-xl h-full relative">
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        className="absolute top-4 right-4 text-[--text-dark] hover:text-[--text-hover]"
       >
         <svg
           className="w-6 h-6"
@@ -145,9 +145,11 @@ export const DetailsForm = ({ date, time, onClose }) => {
         </svg>
       </button>
 
-      <div className="p-6 border-b">
+      <div className="p-6 border-b border-[--rose]">
         <h2 className="text-lg font-semibold">
-          Enter your information to book the slot on {date} at {time}
+          Enter your information to book the slot on{" "}
+          <span className="text-[--text-hover]">{date}</span> at{" "}
+          <span className="text-[--text-hover]">{time}</span>
         </h2>
       </div>
 
@@ -157,7 +159,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
             <div className="space-y-2">
               <label
                 htmlFor="familyName"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-[--text-dark]"
               >
                 Family Name
               </label>
@@ -167,7 +169,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 name="familyName"
                 value={formData.familyName}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
                   errors.familyName ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -179,7 +181,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
             <div className="space-y-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-[--text-dark]"
               >
                 Email
               </label>
@@ -189,7 +191,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -201,7 +203,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
             <div className="space-y-2">
               <label
                 htmlFor="phoneNumber"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-[--text-dark]"
               >
                 Phone Number
               </label>
@@ -211,7 +213,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
                   errors.phoneNumber ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="+1 234 567 8900"
@@ -222,23 +224,15 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 </p>
               )}
             </div>
-
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="w-1/2 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 disabled:bg-blue-400"
-              >
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] py-2 px-4 rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-[--emerald]"
+            >
+              <h2 className="text-lg font-semibold">
                 {isSubmitting ? "Booking..." : "Book Session"}
-              </button>
-            </div>
+              </h2>
+            </button>
           </div>
         </form>
       </div>
