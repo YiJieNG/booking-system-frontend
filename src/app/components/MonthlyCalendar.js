@@ -246,7 +246,7 @@ export const MonthlyCalendar = ({ onClick }) => {
                   className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
                     ${
                       isToday
-                        ? "bg-[--green] font-semibold text-[--text-dark]"
+                        ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
                         : "text-[--text-dark]"
                     }
                     ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
