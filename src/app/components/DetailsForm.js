@@ -146,8 +146,8 @@ export const DetailsForm = ({ date, time, onClose }) => {
       </button>
 
       <div className="p-6 border-b border-[--rose]">
-        <h2 className="text-lg font-semibold">
-          Enter your information to book the slot on{" "}
+        <h2 className="text-lg font-semibold pr-4">
+          Enter your information to book the slot on <br />
           <span className="text-[--text-hover]">{date}</span> at{" "}
           <span className="text-[--text-hover]">{time}</span>
         </h2>

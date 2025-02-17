@@ -101,7 +101,7 @@ export default function Booking() {
           {showModal && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
               {/* Modal Content */}
-              <div className="max-w-md w-full">
+              <div className="max-w-lg w-full">
                 <DetailsForm
                   date={selectedDateString.slice(0, 10)}
                   time={selectedDateString.slice(11, 19)}
