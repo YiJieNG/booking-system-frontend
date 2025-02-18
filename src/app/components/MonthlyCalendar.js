@@ -162,8 +162,8 @@ export const MonthlyCalendar = ({
   }));
 
   return (
-    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl mx-auto">
-      <div className="sticky -top-px z-10 w-full rounded-t-2xl bg-[--pink] px-5 pt-7 sm:px-8 sm:pt-8">
+    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl mx-auto relative overflow-hidden">
+      <div className="w-full rounded-t-2xl bg-[--pink] px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
           <button
             onClick={handleTodayClick}
@@ -274,7 +274,7 @@ export const MonthlyCalendar = ({
           ${
             disabled
               ? "cursor-not-allowed opacity-30"
-              : "cursor-pointer hover:z-20 hover:border-[--text-hover] hover:bg-[--green]"
+              : "cursor-pointer hover:z-10 hover:border-[--text-hover] hover:bg-[--green]"
           }`}
               >
                 <div className="flex justify-center items-center pt-4">
@@ -290,7 +290,7 @@ export const MonthlyCalendar = ({
                     {day}
                   </span>
                 </div>
-                {!disabled && totalSlots > 0 && (
+                {!disabled && (
                   <div className="pb-2 px-1 text-center">
                     <span className="text-sm sm:text-base font-semibold text-[--text-hover] group-hover:text-[--text-dark] transition-colors">
                       {totalSlots}
