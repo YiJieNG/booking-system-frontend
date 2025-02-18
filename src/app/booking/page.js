@@ -68,7 +68,6 @@ export default function Booking() {
   }, [currentMonth.month, currentMonth.year]);
 
   const handleMonthChange = (month, year) => {
-    console.log("Month changed:", month, year);
     setCurrentMonth((prevState) => {
       if (prevState.month !== month || prevState.year !== year) {
         return { month, year };

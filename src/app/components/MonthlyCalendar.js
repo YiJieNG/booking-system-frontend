@@ -133,14 +133,14 @@ export const MonthlyCalendar = ({
     onMonthChange?.(todayMonth, todayYear);
   };
 
-  const isDateDisabled = (day, month, year) => {
+  const isDateDisabled = (day, month, year, isCurrentMonth) => {
     const date = new Date(year, month, day);
     const todayDate = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate()
     );
-    return date < todayDate;
+    return date < todayDate || !isCurrentMonth; // Disable if past OR not in current month
   };
 
   const isDateSelected = (day, month, year) => {
@@ -259,7 +259,7 @@ export const MonthlyCalendar = ({
               today.getMonth() === month &&
               today.getFullYear() === year;
 
-            const disabled = isDateDisabled(day, month, year);
+            const disabled = isDateDisabled(day, month, year, isCurrentMonth);
             const selected = isDateSelected(day, month, year);
             const dateKey = formatDateKey(day, month, year);
             const totalSlots = getTotalSlots(dateKey);
