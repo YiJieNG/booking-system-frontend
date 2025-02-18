@@ -268,34 +268,33 @@ export const MonthlyCalendar = ({
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
-                className={`relative group h-24 sm:h-28 md:h-32 lg:h-36 rounded-lg border border-[--rose] font-medium transition-all 
-                  ${
-                    selected
-                      ? "bg-[--emerald] hover:bg-[--green]"
-                      : "bg-[--peach]"
-                  }
-                  ${!isCurrentMonth ? "opacity-30" : ""}
-                  ${
-                    disabled
-                      ? "cursor-not-allowed opacity-30"
-                      : "cursor-pointer hover:z-20 hover:border-[--text-hover] hover:bg-[--green]"
-                  }`}
+                className={`relative group h-24 rounded-lg border border-[--rose] font-medium transition-all flex flex-col justify-between
+          ${selected ? "bg-[--emerald] hover:bg-[--green]" : "bg-[--peach]"}
+          ${!isCurrentMonth ? "opacity-30" : ""}
+          ${
+            disabled
+              ? "cursor-not-allowed opacity-30"
+              : "cursor-pointer hover:z-20 hover:border-[--text-hover] hover:bg-[--green]"
+          }`}
               >
-                <span
-                  className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
-                    ${
-                      isToday
-                        ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
-                        : "text-[--text-dark]"
-                    }
-                    ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
-                >
-                  {day}
-                </span>
+                <div className="flex justify-center items-center pt-4">
+                  <span
+                    className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full text-lg sm:text-xl md:text-2xl
+              ${
+                isToday
+                  ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
+                  : "text-[--text-dark]"
+              }
+              ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
+                  >
+                    {day}
+                  </span>
+                </div>
                 {!disabled && totalSlots > 0 && (
-                  <div className="absolute bottom-1 left-1 right-1 text-center">
-                    <span className="text-xs font-medium text-[--text-dark]">
-                      {totalSlots} slots
+                  <div className="pb-2 px-1 text-center">
+                    <span className="text-sm sm:text-base font-semibold text-[--text-hover] group-hover:text-[--text-dark] transition-colors">
+                      {totalSlots}
+                      <span className="hidden lg:inline"> slots</span>
                     </span>
                   </div>
                 )}
