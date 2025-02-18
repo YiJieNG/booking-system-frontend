@@ -133,14 +133,16 @@ export const MonthlyCalendar = ({
     onMonthChange?.(todayMonth, todayYear);
   };
 
-  const isDateDisabled = (day, month, year, isCurrentMonth) => {
+  const isDateDisabled = (day, month, year, isCurrentMonth, totalSlots) => {
     const date = new Date(year, month, day);
     const todayDate = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate()
     );
-    return date < todayDate || !isCurrentMonth; // Disable if past OR not in current month
+
+    // Disable if past OR not in current month OR has 0 slots
+    return date < todayDate || !isCurrentMonth || totalSlots === 0;
   };
 
   const isDateSelected = (day, month, year) => {
@@ -259,45 +261,61 @@ export const MonthlyCalendar = ({
               today.getMonth() === month &&
               today.getFullYear() === year;
 
-            const disabled = isDateDisabled(day, month, year, isCurrentMonth);
-            const selected = isDateSelected(day, month, year);
             const dateKey = formatDateKey(day, month, year);
             const totalSlots = getTotalSlots(dateKey);
+            const disabled = isDateDisabled(
+              day,
+              month,
+              year,
+              isCurrentMonth,
+              totalSlots
+            );
+            const selected = isDateSelected(day, month, year);
 
             return (
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
                 className={`relative group h-24 rounded-lg border border-[--rose] font-medium transition-all flex flex-col justify-between
-          ${selected ? "bg-[--emerald] hover:bg-[--green]" : "bg-[--peach]"}
-          ${!isCurrentMonth ? "opacity-30" : ""}
-          ${
-            disabled
-              ? "cursor-not-allowed opacity-30"
-              : "cursor-pointer hover:z-10 hover:border-[--text-hover] hover:bg-[--green]"
-          }`}
+                ${
+                  selected
+                    ? "bg-[--emerald] hover:bg-[--green]"
+                    : "bg-[--peach]"
+                }
+                ${!isCurrentMonth ? "opacity-30" : ""}
+                ${
+                  disabled
+                    ? "cursor-not-allowed opacity-30"
+                    : "cursor-pointer hover:z-10 hover:border-[--text-hover] hover:bg-[--green]"
+                }`}
               >
                 <div className="flex justify-center items-center pt-4">
                   <span
                     className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full text-lg sm:text-xl md:text-2xl
-              ${
-                isToday
-                  ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
-                  : "text-[--text-dark]"
-              }
-              ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
+                    ${
+                      isToday
+                        ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
+                        : "text-[--text-dark]"
+                    }
+                    ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
                   >
                     {day}
                   </span>
                 </div>
-                {!disabled && (
-                  <div className="pb-2 px-1 text-center">
+                <div className="pb-2 px-1 text-center">
+                  {totalSlots > 0 && !disabled && (
                     <span className="text-sm sm:text-base font-semibold text-[--text-hover] group-hover:text-[--text-dark] transition-colors">
                       {totalSlots}
                       <span className="hidden lg:inline"> slots</span>
                     </span>
-                  </div>
-                )}
+                  )}
+                  {totalSlots === 0 && isCurrentMonth && (
+                    <span className="text-sm text-gray-400">
+                      <span className="sm:hidden">0</span>
+                      <span className="hidden sm:inline">No slots</span>
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}
