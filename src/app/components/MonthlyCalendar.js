@@ -4,6 +4,7 @@ const daysOfWeek = {
   short: ["S", "M", "T", "W", "T", "F", "S"],
   medium: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 };
+
 const monthNames = [
   "January",
   "February",
@@ -19,12 +20,31 @@ const monthNames = [
   "December",
 ];
 
-export const MonthlyCalendar = ({ onClick, selectedDate }) => {
+export const MonthlyCalendar = ({
+  onClick,
+  selectedDate,
+  slotsData,
+  onMonthChange,
+}) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState({
     month: today.getMonth(),
     year: today.getFullYear(),
   });
+
+  const formatDateKey = (day, month, year) => {
+    const paddedDay = day.toString().padStart(2, "0");
+    const paddedMonth = (month + 1).toString().padStart(2, "0");
+    return `${paddedDay}-${paddedMonth}-${year}`;
+  };
+
+  const getTotalSlots = (dateKey) => {
+    if (!slotsData || !slotsData[dateKey]) return 0;
+    return Object.values(slotsData[dateKey]).reduce(
+      (sum, slots) => sum + slots,
+      0
+    );
+  };
 
   const getDaysInMonth = (month, year) => {
     const firstDay = new Date(year, month, 1).getDay();
@@ -68,7 +88,6 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
   };
 
   const handlePrevMonth = () => {
-    // Only allow going to previous month if it's not before the current month
     const prevMonth = currentDate.month === 0 ? 11 : currentDate.month - 1;
     const prevYear =
       currentDate.month === 0 ? currentDate.year - 1 : currentDate.year;
@@ -78,19 +97,20 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
       (prevYear === today.getFullYear() && prevMonth >= today.getMonth())
     ) {
       setCurrentDate({ month: prevMonth, year: prevYear });
+      onMonthChange?.(prevMonth, prevYear);
     }
   };
 
   const handleNextMonth = () => {
-    setCurrentDate((prev) => ({
-      year: prev.month === 11 ? prev.year + 1 : prev.year,
-      month: prev.month === 11 ? 0 : prev.month + 1,
-    }));
+    const nextMonth = currentDate.month === 11 ? 0 : currentDate.month + 1;
+    const nextYear =
+      currentDate.month === 11 ? currentDate.year + 1 : currentDate.year;
+    setCurrentDate({ month: nextMonth, year: nextYear });
+    onMonthChange?.(nextMonth, nextYear);
   };
 
   const handleMonthChange = (event) => {
     const newMonth = parseInt(event.target.value, 10);
-    // Only allow changing to months not before the current month
     if (
       currentDate.year > today.getFullYear() ||
       (currentDate.year === today.getFullYear() && newMonth >= today.getMonth())
@@ -99,14 +119,18 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
         ...prev,
         month: newMonth,
       }));
+      onMonthChange?.(newMonth, currentDate.year);
     }
   };
 
   const handleTodayClick = () => {
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
     setCurrentDate({
-      month: today.getMonth(),
-      year: today.getFullYear(),
+      month: todayMonth,
+      year: todayYear,
     });
+    onMonthChange?.(todayMonth, todayYear);
   };
 
   const isDateDisabled = (day, month, year) => {
@@ -130,7 +154,6 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
 
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
 
-  // Filter available months for the select dropdown
   const availableMonths = monthNames.map((month, index) => ({
     name: month,
     value: `${index}`,
@@ -238,12 +261,14 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
 
             const disabled = isDateDisabled(day, month, year);
             const selected = isDateSelected(day, month, year);
+            const dateKey = formatDateKey(day, month, year);
+            const totalSlots = getTotalSlots(dateKey);
 
             return (
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
-                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 rounded-lg border border-[--rose] font-medium transition-all 
+                className={`relative group h-24 sm:h-28 md:h-32 lg:h-36 rounded-lg border border-[--rose] font-medium transition-all 
                   ${
                     selected
                       ? "bg-[--emerald] hover:bg-[--green]"
@@ -254,8 +279,7 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
                     disabled
                       ? "cursor-not-allowed opacity-30"
                       : "cursor-pointer hover:z-20 hover:border-[--text-hover] hover:bg-[--green]"
-                  }
-                  `}
+                  }`}
               >
                 <span
                   className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
@@ -268,6 +292,13 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
                 >
                   {day}
                 </span>
+                {!disabled && totalSlots > 0 && (
+                  <div className="absolute bottom-1 left-1 right-1 text-center">
+                    <span className="text-xs font-medium text-[--text-dark]">
+                      {totalSlots} slots
+                    </span>
+                  </div>
+                )}
               </div>
             );
           })}
