@@ -12,8 +12,8 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
   const timeSlots = generateTimeSlots();
 
   return (
-    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl h-full">
-      <div className="sticky -top-px z-10 w-full rounded-t-2xl bg-[--pink] px-5 pt-7 border-b border-[--rose] pb-4 sm:px-8 sm:pt-8">
+    <div className="rounded-2xl bg-[--blue1] pb-6 text-[--text-dark] shadow-xl h-full">
+      <div className="sticky -top-px z-10 w-full rounded-t-2xl bg-[--blue1] px-5 pt-7 border-b border-[--blue3] pb-4 sm:px-8 sm:pt-8">
         <h2 className="text-lg font-semibold sm:text-xl">
           Available Times for{" "}
           <span className="text-[--text-hover]">{selectedDate}</span>
@@ -24,7 +24,7 @@ export const TimeSlotSelector = ({ selectedDate, onSelectTime }) => {
           {timeSlots.map((time) => (
             <button
               key={time}
-              className="group relative h-12 sm:h-14 rounded-lg border border-[--rose] bg-[--peach] font-medium transition-all hover:z-20 hover:border-[--text-hover] hover:bg-[--green] flex items-center justify-center gap-1"
+              className="group relative h-12 sm:h-14 rounded-lg border border-[--blue3] bg-[--blue2] font-medium transition-all hover:z-20 hover:border-[--text-hover] hover:bg-[--green] flex items-center justify-center gap-1"
               onClick={() => onSelectTime(time)}
             >
               <svg

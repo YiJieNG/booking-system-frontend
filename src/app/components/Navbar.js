@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
   return (
-    <nav className="bg-[var(--peach)] p-4 items-center justify-between">
+    <nav className="bg-[var(--blue2)] p-4 items-center justify-between">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link
@@ -42,7 +42,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (
-        <ul className="lg:hidden flex flex-col items-center gap-3 bg-[var(--peach)] pt-2">
+        <ul className="lg:hidden flex flex-col items-center gap-3 bg-[var(--blue2)] pt-2">
           {["Booking", "About", "Contact"].map((item) => (
             <li key={item}>
               <Link

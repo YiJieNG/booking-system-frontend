@@ -203,7 +203,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
 
   if (isSuccess) {
     return (
-      <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl h-full relative">
+      <div className="rounded-2xl bg-[--blue1] pb-6 text-[--text-dark] shadow-xl h-full relative">
         <div className="p-6 flex flex-col items-center justify-center space-y-4">
           <CheckCircle2 className="w-16 h-16 text-[--emerald]" />
           <h2 className="text-2xl font-semibold text-center">
@@ -217,7 +217,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
           </p> */}
           <button
             onClick={onClose}
-            className="mt-4 w-full max-w-xs bg-[--peach] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--rose] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200"
+            className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
           >
             Close
           </button>
@@ -227,7 +227,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
   }
 
   return (
-    <div className="rounded-2xl bg-[--pink] text-[--text-dark] shadow-xl h-full relative">
+    <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl h-full relative">
       {/* Close button */}
       <button
         onClick={onClose}
@@ -248,7 +248,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
         </svg>
       </button>
 
-      <div className="p-6 border-b border-[--rose]">
+      <div className="p-6 border-b border-[--blue3]">
         <h2 className="text-lg font-semibold pr-4">
           Enter your information to book the slot on <br />
           <span className="text-[--text-hover]">{date}</span> at{" "}
@@ -272,7 +272,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 name="familyName"
                 value={formData.familyName}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                className={`w-full px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                   errors.familyName ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -296,7 +296,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={otpVerified}
-                  className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                  className={`flex-1 px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } ${otpVerified ? "bg-gray-100" : ""}`}
                 />
@@ -304,7 +304,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={sendingOtp || otpVerified}
-                  className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                  className="px-3 py-2 bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
                 >
                   {sendingOtp
                     ? "Sending..."
@@ -333,7 +333,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                     name="otp"
                     value={formData.otp}
                     onChange={handleChange}
-                    className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                    className={`flex-1 px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                       errors.otp ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter OTP from email"
@@ -342,7 +342,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                     type="button"
                     onClick={handleVerifyOtp}
                     disabled={verifyingOtp || !formData.otp}
-                    className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                    className="px-3 py-2 bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300 disabled:border-none disabled:cursor-not-allowed"
                   >
                     {verifyingOtp ? "Verifying..." : "Verify OTP"}
                   </button>
@@ -380,7 +380,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                className={`w-full px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                   errors.phoneNumber ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="+1 234 567 8900"
@@ -395,9 +395,9 @@ export const DetailsForm = ({ date, time, onClose }) => {
             <button
               type="submit"
               disabled={isSubmitting || !otpVerified}
-              className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 ${
+              className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 ${
                 otpVerified
-                  ? "bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"
+                  ? "bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
