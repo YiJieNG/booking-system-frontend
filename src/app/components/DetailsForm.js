@@ -296,7 +296,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={otpVerified}
-                  className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                  className={`flex-1 px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } ${otpVerified ? "bg-gray-100" : ""}`}
                 />
@@ -304,7 +304,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                   type="button"
                   onClick={handleSendOtp}
                   disabled={sendingOtp || otpVerified}
-                  className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                  className="px-3 py-2 bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
                 >
                   {sendingOtp
                     ? "Sending..."
@@ -333,7 +333,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                     name="otp"
                     value={formData.otp}
                     onChange={handleChange}
-                    className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                    className={`flex-1 px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                       errors.otp ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter OTP from email"
@@ -342,7 +342,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
                     type="button"
                     onClick={handleVerifyOtp}
                     disabled={verifyingOtp || !formData.otp}
-                    className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                    className="px-3 py-2 bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300 disabled:border-none disabled:cursor-not-allowed"
                   >
                     {verifyingOtp ? "Verifying..." : "Verify OTP"}
                   </button>
@@ -395,9 +395,9 @@ export const DetailsForm = ({ date, time, onClose }) => {
             <button
               type="submit"
               disabled={isSubmitting || !otpVerified}
-              className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 ${
+              className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 ${
                 otpVerified
-                  ? "bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"
+                  ? "bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
