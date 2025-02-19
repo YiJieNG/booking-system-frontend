@@ -164,13 +164,13 @@ export const MonthlyCalendar = ({
   }));
 
   return (
-    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl mx-auto relative overflow-hidden">
-      <div className="w-full rounded-t-2xl bg-[--pink] px-5 pt-7 sm:px-8 sm:pt-8">
+    <div className="rounded-2xl bg-[--blue1] pb-6 text-[--text-dark] shadow-xl mx-auto relative overflow-hidden">
+      <div className="w-full rounded-t-2xl bg-[--blue1] px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
           <button
             onClick={handleTodayClick}
             type="button"
-            className="rounded-lg border border-[--rose] bg-[--peach] px-3 py-1.5 text-sm font-medium text-[--text-dark] hover:bg-[--green] lg:px-5 lg:py-2.5"
+            className="rounded-lg border border-[--blue3] bg-[--blue2] px-3 py-1.5 text-sm font-medium text-[--text-dark] hover:bg-[--green] lg:px-5 lg:py-2.5"
           >
             Today
           </button>
@@ -181,12 +181,12 @@ export const MonthlyCalendar = ({
                 currentDate.year === today.getFullYear() &&
                 currentDate.month === today.getMonth()
               }
-              className={`rounded-full border border-[--rose] p-1 transition-colors sm:p-2 
+              className={`rounded-full border border-[--blue3] p-1 transition-colors sm:p-2 
                 ${
                   currentDate.year === today.getFullYear() &&
                   currentDate.month === today.getMonth()
                     ? "opacity-30 cursor-not-allowed"
-                    : "hover:bg-[--green] bg-[--peach]"
+                    : "hover:bg-[--green] bg-[--blue2]"
                 }`}
             >
               <svg
@@ -214,7 +214,7 @@ export const MonthlyCalendar = ({
             />
             <button
               onClick={handleNextMonth}
-              className="rounded-full border border-[--rose] bg-[--peach] p-1 transition-colors hover:bg-[--green] sm:p-2"
+              className="rounded-full border border-[--blue3] bg-[--blue2] p-1 transition-colors hover:bg-[--green] sm:p-2"
             >
               <svg
                 className="size-5 text-[--text-dark]"
@@ -243,7 +243,7 @@ export const MonthlyCalendar = ({
           {daysOfWeek.short.map((day, index) => (
             <div
               key={index}
-              className="w-full border-b border-[--rose] py-2 text-center text-sm font-semibold"
+              className="w-full border-b border-[--blue3] py-2 text-center text-sm font-semibold"
             >
               <span className="sm:hidden">{daysOfWeek.short[index]}</span>
               <span className="hidden sm:inline">
@@ -276,11 +276,11 @@ export const MonthlyCalendar = ({
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
-                className={`relative group h-24 rounded-lg border border-[--rose] font-medium transition-all flex flex-col justify-between
+                className={`relative group h-24 rounded-lg border border-[--blue3] font-medium transition-all flex flex-col justify-between
                 ${
                   selected
                     ? "bg-[--emerald] hover:bg-[--green]"
-                    : "bg-[--peach]"
+                    : "bg-[--blue2]"
                 }
                 ${!isCurrentMonth ? "opacity-30" : ""}
                 ${
@@ -347,7 +347,7 @@ export const Select = ({
       name={name}
       value={value}
       onChange={onChange}
-      className="cursor-pointer rounded-lg border border-[--rose] bg-[--peach] py-1.5 pl-2 pr-6 text-sm font-medium text-[--text-dark] sm:rounded-xl sm:py-2.5 sm:pl-3 sm:pr-8"
+      className="cursor-pointer rounded-lg border border-[--blue3] bg-[--blue2] py-1.5 pl-2 pr-6 text-sm font-medium text-[--text-dark] sm:rounded-xl sm:py-2.5 sm:pl-3 sm:pr-8"
       required
     >
       {options.map((option) => (

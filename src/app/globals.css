@@ -4,15 +4,16 @@
 
 :root {
   /* colour palatte */
-  --white: #fafaeb;
-  --pink: #f3edf2;
-  --green: #d5ebda;
-  --emerald: #bfe1c7;
-  --peach: #f4dacd;
-  --rose: #ead3d4;
+  --white: #edf6fe;
+  --blue1: #d9eafd;
+  --blue2: #bcccdc;
+  --blue3: #9aa6b2;
 
-  --text-dark: #4a4a4a;
-  --text-hover: #8b5e66;
+  --green: #c0d7c9;
+  --emerald: #a4beae;
+
+  --text-dark: #22252b;
+  --text-hover: #33495d;
 }
 
 body {
