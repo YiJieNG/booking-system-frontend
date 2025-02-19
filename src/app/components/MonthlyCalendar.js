@@ -4,6 +4,7 @@ const daysOfWeek = {
   short: ["S", "M", "T", "W", "T", "F", "S"],
   medium: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 };
+
 const monthNames = [
   "January",
   "February",
@@ -19,12 +20,31 @@ const monthNames = [
   "December",
 ];
 
-export const MonthlyCalendar = ({ onClick, selectedDate }) => {
+export const MonthlyCalendar = ({
+  onClick,
+  selectedDate,
+  slotsData,
+  onMonthChange,
+}) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState({
     month: today.getMonth(),
     year: today.getFullYear(),
   });
+
+  const formatDateKey = (day, month, year) => {
+    const paddedDay = day.toString().padStart(2, "0");
+    const paddedMonth = (month + 1).toString().padStart(2, "0");
+    return `${paddedDay}-${paddedMonth}-${year}`;
+  };
+
+  const getTotalSlots = (dateKey) => {
+    if (!slotsData || !slotsData[dateKey]) return 0;
+    return Object.values(slotsData[dateKey]).reduce(
+      (sum, slots) => sum + slots,
+      0
+    );
+  };
 
   const getDaysInMonth = (month, year) => {
     const firstDay = new Date(year, month, 1).getDay();
@@ -68,7 +88,6 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
   };
 
   const handlePrevMonth = () => {
-    // Only allow going to previous month if it's not before the current month
     const prevMonth = currentDate.month === 0 ? 11 : currentDate.month - 1;
     const prevYear =
       currentDate.month === 0 ? currentDate.year - 1 : currentDate.year;
@@ -78,19 +97,20 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
       (prevYear === today.getFullYear() && prevMonth >= today.getMonth())
     ) {
       setCurrentDate({ month: prevMonth, year: prevYear });
+      onMonthChange?.(prevMonth, prevYear);
     }
   };
 
   const handleNextMonth = () => {
-    setCurrentDate((prev) => ({
-      year: prev.month === 11 ? prev.year + 1 : prev.year,
-      month: prev.month === 11 ? 0 : prev.month + 1,
-    }));
+    const nextMonth = currentDate.month === 11 ? 0 : currentDate.month + 1;
+    const nextYear =
+      currentDate.month === 11 ? currentDate.year + 1 : currentDate.year;
+    setCurrentDate({ month: nextMonth, year: nextYear });
+    onMonthChange?.(nextMonth, nextYear);
   };
 
   const handleMonthChange = (event) => {
     const newMonth = parseInt(event.target.value, 10);
-    // Only allow changing to months not before the current month
     if (
       currentDate.year > today.getFullYear() ||
       (currentDate.year === today.getFullYear() && newMonth >= today.getMonth())
@@ -99,24 +119,30 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
         ...prev,
         month: newMonth,
       }));
+      onMonthChange?.(newMonth, currentDate.year);
     }
   };
 
   const handleTodayClick = () => {
+    const todayMonth = today.getMonth();
+    const todayYear = today.getFullYear();
     setCurrentDate({
-      month: today.getMonth(),
-      year: today.getFullYear(),
+      month: todayMonth,
+      year: todayYear,
     });
+    onMonthChange?.(todayMonth, todayYear);
   };
 
-  const isDateDisabled = (day, month, year) => {
+  const isDateDisabled = (day, month, year, isCurrentMonth, totalSlots) => {
     const date = new Date(year, month, day);
     const todayDate = new Date(
       today.getFullYear(),
       today.getMonth(),
       today.getDate()
     );
-    return date < todayDate;
+
+    // Disable if past OR not in current month OR has 0 slots
+    return date < todayDate || !isCurrentMonth || totalSlots === 0;
   };
 
   const isDateSelected = (day, month, year) => {
@@ -130,7 +156,6 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
 
   const monthDays = getDaysInMonth(currentDate.month, currentDate.year);
 
-  // Filter available months for the select dropdown
   const availableMonths = monthNames.map((month, index) => ({
     name: month,
     value: `${index}`,
@@ -139,8 +164,8 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
   }));
 
   return (
-    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl mx-auto">
-      <div className="sticky -top-px z-10 w-full rounded-t-2xl bg-[--pink] px-5 pt-7 sm:px-8 sm:pt-8">
+    <div className="rounded-2xl bg-[--pink] pb-6 text-[--text-dark] shadow-xl mx-auto relative overflow-hidden">
+      <div className="w-full rounded-t-2xl bg-[--pink] px-5 pt-7 sm:px-8 sm:pt-8">
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
           <button
             onClick={handleTodayClick}
@@ -236,38 +261,61 @@ export const MonthlyCalendar = ({ onClick, selectedDate }) => {
               today.getMonth() === month &&
               today.getFullYear() === year;
 
-            const disabled = isDateDisabled(day, month, year);
+            const dateKey = formatDateKey(day, month, year);
+            const totalSlots = getTotalSlots(dateKey);
+            const disabled = isDateDisabled(
+              day,
+              month,
+              year,
+              isCurrentMonth,
+              totalSlots
+            );
             const selected = isDateSelected(day, month, year);
 
             return (
               <div
                 key={index}
                 onClick={() => !disabled && onClick?.(day, month, year)}
-                className={`relative group h-12 sm:h-14 md:h-16 lg:h-20 rounded-lg border border-[--rose] font-medium transition-all 
-                  ${
-                    selected
-                      ? "bg-[--emerald] hover:bg-[--green]"
-                      : "bg-[--peach]"
-                  }
-                  ${!isCurrentMonth ? "opacity-30" : ""}
-                  ${
-                    disabled
-                      ? "cursor-not-allowed opacity-30"
-                      : "cursor-pointer hover:z-20 hover:border-[--text-hover] hover:bg-[--green]"
-                  }
-                  `}
+                className={`relative group h-24 rounded-lg border border-[--rose] font-medium transition-all flex flex-col justify-between
+                ${
+                  selected
+                    ? "bg-[--emerald] hover:bg-[--green]"
+                    : "bg-[--peach]"
+                }
+                ${!isCurrentMonth ? "opacity-30" : ""}
+                ${
+                  disabled
+                    ? "cursor-not-allowed opacity-30"
+                    : "cursor-pointer hover:z-10 hover:border-[--text-hover] hover:bg-[--green]"
+                }`}
               >
-                <span
-                  className={`absolute left-1 top-1 flex h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 items-center justify-center rounded-full text-xs sm:text-sm 
+                <div className="flex justify-center items-center pt-4">
+                  <span
+                    className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full text-lg sm:text-xl md:text-2xl
                     ${
                       isToday
                         ? "bg-[--green] font-semibold text-[--text-dark] border border-[--text-hover]"
                         : "text-[--text-dark]"
                     }
                     ${isCurrentMonth ? "font-semibold" : "font-normal"}`}
-                >
-                  {day}
-                </span>
+                  >
+                    {day}
+                  </span>
+                </div>
+                <div className="pb-2 px-1 text-center">
+                  {totalSlots > 0 && !disabled && (
+                    <span className="text-sm sm:text-base font-semibold text-[--text-hover] group-hover:text-[--text-dark] transition-colors">
+                      {totalSlots}
+                      <span className="hidden lg:inline"> slots</span>
+                    </span>
+                  )}
+                  {totalSlots === 0 && isCurrentMonth && (
+                    <span className="text-sm text-gray-400">
+                      <span className="sm:hidden">0</span>
+                      <span className="hidden sm:inline">No slots</span>
+                    </span>
+                  )}
+                </div>
               </div>
             );
           })}
