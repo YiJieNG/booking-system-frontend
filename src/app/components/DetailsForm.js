@@ -3,12 +3,7 @@ import { CheckCircle2 } from "lucide-react";
 import axios from "axios";
 
 const makeBooking = async (date, time, phone, email, familyName) => {
-  // console.log("Sliced Date string: ", dateString.slice(0, 10));
-  // console.log("Sliced Time string: ", dateString.slice(11, 19));
-  // makeBooking(dateString.slice(0, 10), dateString.slice(11, 19));
-
   try {
-    // const response = await axios.get("https://www./api/questions");
     const data = {
       bkg_date: date,
       bkg_time: time,
@@ -20,8 +15,41 @@ const makeBooking = async (date, time, phone, email, familyName) => {
       "http://127.0.0.1:5000/api/makeBooking",
       data
     );
+    return response;
   } catch (error) {
     console.error("Error to book a session:", error);
+    throw error;
+  }
+};
+
+const requestOtp = async (email) => {
+  try {
+    const data = { email: email };
+    const response = await axios.post(
+      "http://127.0.0.1:5000/api/request-otp",
+      data
+    );
+    return response;
+  } catch (error) {
+    console.error("Error requesting OTP:", error);
+    throw error;
+  }
+};
+
+const verifyOtp = async (email, otp) => {
+  try {
+    const data = {
+      email: email,
+      otp: otp,
+    };
+    const response = await axios.post(
+      "http://127.0.0.1:5000/api/verify-otp",
+      data
+    );
+    return response;
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    throw error;
   }
 };
 
@@ -30,16 +58,36 @@ export const DetailsForm = ({ date, time, onClose }) => {
     phoneNumber: "",
     email: "",
     familyName: "",
+    otp: "",
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
+  const [verifyingOtp, setVerifyingOtp] = useState(false);
+  const [otpMessage, setOtpMessage] = useState("");
+
+  const validateEmail = () => {
+    if (!formData.email) {
+      setErrors((prev) => ({ ...prev, email: "Email is required" }));
+      return false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Please enter a valid email address",
+      }));
+      return false;
+    }
+    return true;
+  };
 
   const validateForm = () => {
     const newErrors = {};
 
-    // Validate phone number (basic validation for demonstration)
+    // Validate phone number
     if (!formData.phoneNumber) {
       newErrors.phoneNumber = "Phone number is required";
     } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phoneNumber)) {
@@ -62,8 +110,63 @@ export const DetailsForm = ({ date, time, onClose }) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleSendOtp = async () => {
+    if (!validateEmail()) return;
+
+    setSendingOtp(true);
+    setOtpMessage("");
+
+    try {
+      await requestOtp(formData.email);
+      setOtpSent(true);
+      setOtpMessage("OTP sent successfully. Please check your email.");
+    } catch (error) {
+      setOtpMessage("Failed to send OTP. Please try again.");
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!formData.otp) {
+      setErrors((prev) => ({ ...prev, otp: "OTP is required" }));
+      return;
+    }
+
+    setVerifyingOtp(true);
+    setOtpMessage("");
+    setErrors((prev) => ({ ...prev, otp: "" })); // Clear previous errors
+
+    try {
+      const response = await verifyOtp(formData.email, formData.otp);
+
+      // Check the success flag in the response
+      if (response.data.success) {
+        setOtpVerified(true);
+        setOtpMessage("Email verified successfully!");
+      } else {
+        // Handle unsuccessful verification
+        setErrors((prev) => ({ ...prev, otp: response.data.message }));
+      }
+    } catch (error) {
+      // This would only happen for network errors now
+      setErrors((prev) => ({
+        ...prev,
+        otp: "Network error. Please check your connection.",
+      }));
+    } finally {
+      setVerifyingOtp(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!otpVerified) {
+      setOtpMessage("Please verify your email with OTP before booking");
+      return;
+    }
+
     if (validateForm()) {
       setIsSubmitting(true);
       try {
@@ -109,9 +212,9 @@ export const DetailsForm = ({ date, time, onClose }) => {
           <p className="text-[--text-dark] text-center">
             Your session has been successfully booked for {time} on {date}
           </p>
-          <p className="text-[--text-dark] text-center">
+          {/* <p className="text-[--text-dark] text-center">
             A confirmation email will be sent to {formData.email}
-          </p>
+          </p> */}
           <button
             onClick={onClose}
             className="mt-4 w-full max-w-xs bg-[--peach] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--rose] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200"
@@ -185,20 +288,84 @@ export const DetailsForm = ({ date, time, onClose }) => {
               >
                 Email
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`w-full px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                }`}
-              />
+              <div className="flex space-x-2">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  disabled={otpVerified}
+                  className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } ${otpVerified ? "bg-gray-100" : ""}`}
+                />
+                <button
+                  type="button"
+                  onClick={handleSendOtp}
+                  disabled={sendingOtp || otpVerified}
+                  className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                >
+                  {sendingOtp
+                    ? "Sending..."
+                    : otpVerified
+                    ? "Verified"
+                    : "Send OTP"}
+                </button>
+              </div>
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
+
+            {otpSent && !otpVerified && (
+              <div className="space-y-2">
+                <label
+                  htmlFor="otp"
+                  className="block text-sm font-medium text-[--text-dark]"
+                >
+                  Enter OTP
+                </label>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    value={formData.otp}
+                    onChange={handleChange}
+                    className={`flex-1 px-3 py-2 border border-[--rose] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--rose] ${
+                      errors.otp ? "border-red-500" : "border-gray-300"
+                    }`}
+                    placeholder="Enter OTP from email"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleVerifyOtp}
+                    disabled={verifyingOtp || !formData.otp}
+                    className="px-3 py-2 bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-gray-300"
+                  >
+                    {verifyingOtp ? "Verifying..." : "Verify OTP"}
+                  </button>
+                </div>
+                {errors.otp && (
+                  <p className="text-red-500 text-sm mt-1">{errors.otp}</p>
+                )}
+              </div>
+            )}
+
+            {otpMessage && (
+              <div
+                className={`p-2 rounded ${
+                  otpVerified
+                    ? "bg-green-100 text-green-800"
+                    : otpSent
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {otpMessage}
+              </div>
+            )}
 
             <div className="space-y-2">
               <label
@@ -224,10 +391,15 @@ export const DetailsForm = ({ date, time, onClose }) => {
                 </p>
               )}
             </div>
+
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] py-2 px-4 rounded-md hover:bg-[--green] focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 disabled:bg-[--emerald]"
+              disabled={isSubmitting || !otpVerified}
+              className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--rose] focus:ring-offset-2 transition-colors duration-200 ${
+                otpVerified
+                  ? "bg-[--peach] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
               <h2 className="text-lg font-semibold">
                 {isSubmitting ? "Booking..." : "Book Session"}
