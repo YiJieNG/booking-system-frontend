@@ -27,7 +27,7 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden lg:flex gap-6">
-          {["Booking", "About", "Contact"].map((item) => (
+          {["Booking", "BookedSession"].map((item) => (
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
@@ -43,7 +43,7 @@ const Navbar = () => {
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <ul className="lg:hidden flex flex-col items-center gap-3 bg-[var(--blue2)] pt-2">
-          {["Booking", "About", "Contact"].map((item) => (
+          {["Booking", "BookedSession"].map((item) => (
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
