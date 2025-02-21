@@ -69,6 +69,7 @@ export const DetailsForm = ({ date, time, onClose }) => {
   const [sendingOtp, setSendingOtp] = useState(false);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
   const [otpMessage, setOtpMessage] = useState("");
+  const [refNumber, setRefNumber] = useState("");
 
   const validateEmail = () => {
     if (!formData.email) {
@@ -170,13 +171,14 @@ export const DetailsForm = ({ date, time, onClose }) => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        await makeBooking(
+        const response = await makeBooking(
           date,
           time,
           formData.phoneNumber,
           formData.email,
           formData.familyName
         );
+        setRefNumber(response.data.ref_number);
         setIsSuccess(true);
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -215,6 +217,12 @@ export const DetailsForm = ({ date, time, onClose }) => {
           {/* <p className="text-[--text-dark] text-center">
             A confirmation email will be sent to {formData.email}
           </p> */}
+          <p className="text-[--text-dark] text-center">
+            Your booking reference number is: <strong>{refNumber}</strong>
+          </p>
+          <p className="text-[--text-dark] text-center">
+            Please keep the reference number properly
+          </p>
           <button
             onClick={onClose}
             className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
