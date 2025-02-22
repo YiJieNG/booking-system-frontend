@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UpdateBooking } from "../components/UpdateBooking";
+import { BookingDetails } from "../components/BookingDetails";
 import axios from "axios";
 
 const getBooking = async (refNumber, familyName) => {
@@ -107,7 +107,7 @@ export default function BookedSession() {
       <div className="container relative w-full mx-auto">
         <div className="flex flex-col md:flex-row gap-4 justify-center">
           {isLogin ? (
-            <UpdateBooking
+            <BookingDetails
               bkg_date={bookedData.bkg_date}
               bkg_time={bookedData.bkg_time}
               phone={bookedData.phone}

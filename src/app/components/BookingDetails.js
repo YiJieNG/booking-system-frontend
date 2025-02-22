@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ConfirmDelete } from "./ConfirmDelete";
 
-export const UpdateBooking = ({
+export const BookingDetails = ({
   bkg_date,
   bkg_time,
   phone,
