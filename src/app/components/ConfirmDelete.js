@@ -84,7 +84,7 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
         </svg>
       </button>
 
-      <div className="p-6 border-b border-[--blue3]">
+      <div className="p-6 border-[--blue3]">
         <h2 className="text-lg font-semibold pr-4">
           Are you sure you want to cancel the booking?
           <br />
@@ -100,8 +100,6 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
           </h2>
         </button>
       </div>
-
-      <div className="p-6"></div>
     </div>
   );
 };
