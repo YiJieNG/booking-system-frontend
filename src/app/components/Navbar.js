@@ -3,6 +3,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons for menu
 
+const navBarItems = [
+  { name: "Book a Session", link: "booking" },
+  { name: "Manage your Booking", link: "manage" },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
 
@@ -27,13 +32,13 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden lg:flex gap-6">
-          {["Booking", "BookedSession"].map((item) => (
-            <li key={item}>
+          {navBarItems.map((item) => (
+            <li key={item.link}>
               <Link
-                href={`/${item.toLowerCase()}`}
+                href={`/${item.link.toLowerCase()}`}
                 className="text-[var(--text-dark)] text-lg hover:text-[var(--text-hover)]"
               >
-                {item}
+                {item.name}
               </Link>
             </li>
           ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UpdateBooking } from "../components/UpdateBooking";
+import { BookingDetails } from "../components/BookingDetails";
 import axios from "axios";
 
 const getBooking = async (refNumber, familyName) => {
@@ -105,9 +105,9 @@ export default function BookedSession() {
   return (
     <div className="h-full w-full p-4">
       <div className="container relative w-full mx-auto">
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4 justify-center">
           {isLogin ? (
-            <UpdateBooking
+            <BookingDetails
               bkg_date={bookedData.bkg_date}
               bkg_time={bookedData.bkg_time}
               phone={bookedData.phone}
@@ -119,21 +119,21 @@ export default function BookedSession() {
             />
           ) : (
             <div
-              className={`transition-all duration-500 ease-in-out w-full relative md:w-full border border-[--blue3] rounded-md shadow-sm`}
+              className={`bg-[--blue1] transition-all duration-500 ease-in-out w-full relative lg:w-1/2 border border-[--blue3] rounded-xl shadow-xl`}
             >
               <div className="p-6 border-b border-[--blue3]">
-                <h2 className="text-lg font-semibold pr-4">
+                <h2 className="text-3xl font-bold pr-4">
                   Check / Update your booked session
                 </h2>
               </div>
               <div className="p-6">
                 <form onSubmit={handleSubmit}>
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {/* Reference Number Field */}
                     <div className="space-y-2">
                       <label
                         htmlFor="refNumber"
-                        className="block text-sm font-medium text-[--text-dark]"
+                        className="block text-lg font-semibold text-[--text-dark]"
                       >
                         Reference Number
                       </label>
@@ -161,7 +161,7 @@ export default function BookedSession() {
                     <div className="space-y-2">
                       <label
                         htmlFor="familyName"
-                        className="block text-sm font-medium text-[--text-dark]"
+                        className="block text-lg font-semibold text-[--text-dark]"
                       >
                         Family Name
                       </label>
@@ -171,7 +171,7 @@ export default function BookedSession() {
                         name="familyName"
                         value={formData.familyName}
                         onChange={handleChange}
-                        className={`w-full px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
+                        className={`text-lg w-full px-3 py-2 border border-[--blue3] rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[--blue3] ${
                           errors.familyName
                             ? "border-red-500"
                             : "border-gray-300"
@@ -197,7 +197,9 @@ export default function BookedSession() {
                       className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green] disabled:opacity-70 disabled:cursor-not-allowed`}
                     >
                       <h2 className="text-lg font-semibold">
-                        {isSubmitting ? "Verifying..." : "Login"}
+                        {isSubmitting
+                          ? "Verifying..."
+                          : "Retrieve Your Booking"}
                       </h2>
                     </button>
                   </div>
