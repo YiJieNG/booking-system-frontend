@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, AlertTriangle, Trash2 } from "lucide-react";
 import axios from "axios";
 
 const cancelBooking = async (refNumber) => {
@@ -42,18 +42,26 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
 
   if (isSuccess) {
     return (
-      <div className="rounded-2xl bg-[--blue1] pb-6 text-[--text-dark] shadow-xl h-full relative">
-        <div className="p-6 flex flex-col items-center justify-center space-y-4">
-          <CheckCircle2 className="w-16 h-16 text-[--emerald]" />
-          <h2 className="text-2xl font-semibold text-center">
+      <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl relative overflow-hidden">
+        <div className="w-full rounded-t-2xl bg-[--blue1] px-5 pt-7 sm:px-8 sm:pt-8">
+          <div className="flex w-full items-center justify-center">
+            <CheckCircle2 className="w-16 h-16 text-[--emerald]" />
+          </div>
+        </div>
+
+        <div className="px-5 py-8 sm:px-8 border-b border-[--blue3]">
+          <h2 className="text-2xl font-bold text-center mb-4">
             Booking Deleted!
           </h2>
-          <p className="text-[--text-dark] text-center">
-            Your session has been deleted!
+          <p className="text-[--text-dark] text-center text-lg">
+            Your session has been successfully cancelled.
           </p>
+        </div>
+
+        <div className="px-5 py-6 sm:px-8">
           <button
             onClick={redirectUser}
-            className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
+            className="w-full py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-[--green] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg"
           >
             Return to HomePage
           </button>
@@ -63,41 +71,53 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
   }
 
   return (
-    <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl h-full relative">
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-[--text-dark] hover:text-[--text-hover]"
-      >
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+    <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl relative overflow-hidden">
+      <div className="w-full rounded-t-2xl bg-[--blue1] px-5 pt-6 sm:px-8 sm:pt-6 border-b border-[--blue3]">
+        <div className="mb-4 flex w-full items-center justify-between">
+          <h2 className="text-2xl font-bold">Cancel Booking</h2>
+          <button
+            onClick={onClose}
+            className="rounded-lg border border-[--blue3] bg-[--blue2] p-2 text-[--text-dark] hover:bg-[--green] transition-colors duration-200"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
 
-      <div className="p-6 border-[--blue3]">
-        <h2 className="text-lg font-semibold pr-4">
-          Are you sure you want to cancel the booking?
-          <br />
-        </h2>
+      <div className="px-5 py-8 sm:px-8 border-b border-[--blue3]">
+        <div className="flex flex-col items-center justify-center mb-6">
+          <AlertTriangle className="w-16 h-16 text-[--text-hover] mb-4" />
+        </div>
+        <div className="bg-[--blue2] rounded-lg p-4">
+          <p className="text-lg font-medium text-[--text-hover]">
+            Are you sure you want to cancel this booking?
+          </p>
+        </div>
+        {errors?.cancel && (
+          <p className="mt-4 text-red-600 text-center">{errors.cancel}</p>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 px-5 py-6 sm:px-8">
         <button
-          type="cancel"
-          disabled={isSubmitting}
           onClick={handleCancelBooking}
-          className={`w-full py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200 ${"bg-[--blue2] text-[--text-dark] border hover:border-[--text-hover] hover:bg-[--green]"}`}
+          disabled={isSubmitting}
+          className="w-full py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-red-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg flex items-center justify-center gap-2"
         >
-          <h2 className="text-lg font-semibold">
-            {isSubmitting ? "Cancelling..." : "Cancel"}
-          </h2>
+          <Trash2 className="w-5 h-5" />
+          {isSubmitting ? "Cancelling..." : "Cancel Booking"}
         </button>
       </div>
     </div>
