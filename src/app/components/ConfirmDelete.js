@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CheckCircle2 } from "lucide-react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const cancelBooking = async (refNumber) => {
   try {
@@ -23,6 +24,7 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState(null);
+  const router = useRouter();
 
   const handleCancelBooking = async () => {
     setIsSubmitting(true);
@@ -52,7 +54,7 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
             Your session has been deleted!
           </p>
           <button
-            onClick={redirectUser}
+            onClick={() => router.push("/")}
             className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
           >
             Return to HomePage
