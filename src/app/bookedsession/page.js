@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { UpdateBooking } from "../components/UpdateBooking";
 import axios from "axios";
 
 const getBooking = async (refNumber, familyName) => {
@@ -61,7 +62,7 @@ export default function BookedSession() {
         );
         console.log(response.data);
         if (response.data.success) {
-          setBookedData(response.data.booking);
+          setBookedData(response.data);
           setIsLogin(true);
         } else {
           // Handle unsuccessful verification
@@ -106,31 +107,16 @@ export default function BookedSession() {
       <div className="container relative w-full mx-auto">
         <div className="flex flex-col md:flex-row gap-4">
           {isLogin ? (
-            <div
-              className={`transition-all duration-500 ease-in-out w-full relative md:w-full p-6 border border-[--blue3] rounded-md`}
-            >
-              <h2 className="text-xl font-semibold mb-4">Booking Details</h2>
-              {bookedData && (
-                <div className="space-y-3">
-                  <p>
-                    <span className="font-medium">Reference Number:</span>{" "}
-                    {formData.refNumber}
-                  </p>
-                  <p>
-                    <span className="font-medium">Family Name:</span>{" "}
-                    {formData.familyName}
-                  </p>
-                  {/* Display other booking details here */}
-                  <p>
-                    <span className="font-medium">Date:</span> {bookedData.date}
-                  </p>
-                  <p>
-                    <span className="font-medium">Time:</span> {bookedData.time}
-                  </p>
-                  {/* Add more fields as needed */}
-                </div>
-              )}
-            </div>
+            <UpdateBooking
+              bkg_date={bookedData.bkg_date}
+              bkg_time={bookedData.bkg_time}
+              phone={bookedData.phone}
+              email={bookedData.email}
+              family_name={bookedData.family_name}
+              refNumber={formData.refNumber}
+              table_num={bookedData.table_num}
+              redirectUser={() => setIsLogin(false)}
+            />
           ) : (
             <div
               className={`transition-all duration-500 ease-in-out w-full relative md:w-full border border-[--blue3] rounded-md shadow-sm`}
