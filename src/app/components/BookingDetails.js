@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ConfirmDelete } from "./ConfirmDelete";
+import UpdateBookingForm from "./UpdateBookingForm";
 
 export const BookingDetails = ({
   bkg_date,
@@ -179,6 +180,20 @@ export const BookingDetails = ({
             <ConfirmDelete
               refNumber={refNumber}
               onClose={() => setShowDeleteModal(false)}
+              redirectUser={redirectUser}
+            />
+          </div>
+        </div>
+      )}
+
+      {showUpdateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+          <div className="max-w-5xl w-full">
+            <UpdateBookingForm
+              currentDate={bkg_date}
+              currentTime={bkg_time}
+              refNumber={refNumber}
+              onClose={() => setShowUpdateModal(false)}
               redirectUser={redirectUser}
             />
           </div>
