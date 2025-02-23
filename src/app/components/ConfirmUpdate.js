@@ -52,7 +52,7 @@ export const ConfirmUpdate = ({
               {currentTime}
             </p>
             <p className="text-sm text-[--text-dark]">
-              To: {moment(newDate).format("MMMM D, YYYY")} at {newTime}
+              To: {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00:00
             </p>
           </div>
         </div>

@@ -73,6 +73,7 @@ const UpdateBookingForm = ({
       selectedDate.day,
       time
     );
+    console.log(time);
     const dateString = moment(dateObject).utcOffset(0, true).format();
     setSelectedTime(time);
     setSelectedDateString(dateString);
@@ -84,14 +85,40 @@ const UpdateBookingForm = ({
     setError(null);
 
     try {
-      await axios.put(`http://127.0.0.1:5000/api/bookings/${refNumber}`, {
-        new_date: selectedDateString.slice(0, 10),
-        new_time: selectedDateString.slice(11, 19),
-      });
+      // Create date object from selected date and time
+      const dateObject = new Date(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day
+      );
 
-      redirectUser("/booking-success");
+      // Format date as YYYY-MM-DD
+      const formattedDate = dateObject.toISOString().split("T")[0];
+
+      // Format time as HH:MM:SS
+      const formattedTime = `${selectedTime}:00`;
+
+      const response = await axios.put(
+        "http://127.0.0.1:5000/api/updateBooking",
+        {
+          ref_num: refNumber,
+          bkg_date: formattedDate,
+          bkg_time: formattedTime,
+          // Note: other fields (phone, email, family_name, table) can be added here
+          // if they need to be updated as well
+        }
+      );
+
+      if (response.status === 201) {
+        redirectUser("/booking-success");
+      } else {
+        throw new Error("Failed to update booking");
+      }
     } catch (err) {
-      setError("Failed to update booking. Please try again.");
+      setError(
+        err.response?.data?.error ||
+          "Failed to update booking. Please try again."
+      );
       setIsLoading(false);
     }
   };
@@ -195,6 +222,7 @@ const UpdateBookingForm = ({
           )}
         </div>
       </div>
+
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="max-w-lg w-full mx-4">
