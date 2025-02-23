@@ -110,7 +110,6 @@ const UpdateBookingForm = ({
       );
 
       if (response.status === 201) {
-        redirectUser("/booking-success");
       } else {
         throw new Error("Failed to update booking");
       }
