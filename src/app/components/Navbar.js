@@ -48,14 +48,14 @@ const Navbar = () => {
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <ul className="lg:hidden flex flex-col items-center gap-3 bg-[var(--blue2)] pt-2">
-          {["Booking", "BookedSession"].map((item) => (
-            <li key={item}>
+          {navBarItems.map((item) => (
+            <li key={item.link}>
               <Link
-                href={`/${item.toLowerCase()}`}
+                href={`/${item.link.toLowerCase()}`}
                 className="text-[var(--text-dark)] text-lg hover:text-[var(--text-hover)]"
                 onClick={() => setIsOpen(false)}
               >
-                {item}
+                {item.name}
               </Link>
             </li>
           ))}
