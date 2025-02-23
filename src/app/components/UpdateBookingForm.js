@@ -123,6 +123,25 @@ const UpdateBookingForm = ({
     }
   };
 
+  const filterAvailableSlots = (slots) => {
+    if (!slots) return {};
+
+    const currentDateObj = new Date(currentDate);
+    const isCurrentDate =
+      currentDateObj.getDate() === selectedDate.day &&
+      currentDateObj.getMonth() === selectedDate.month &&
+      currentDateObj.getFullYear() === selectedDate.year;
+
+    if (isCurrentDate) {
+      console.log(currentTime);
+      console.log(slots);
+      return Object.fromEntries(
+        Object.entries(slots).filter(([time]) => time !== currentTime)
+      );
+    }
+    return slots;
+  };
+
   const monthNames = [
     "January",
     "February",
@@ -199,15 +218,17 @@ const UpdateBookingForm = ({
                   onSelectTime={handleTimeSelection}
                   availableSlots={
                     selectedDate
-                      ? slotsData[
-                          `${String(selectedDate.day).padStart(
-                            2,
-                            "0"
-                          )}-${String(selectedDate.month + 1).padStart(
-                            2,
-                            "0"
-                          )}-${selectedDate.year}`
-                        ]
+                      ? filterAvailableSlots(
+                          slotsData[
+                            `${String(selectedDate.day).padStart(
+                              2,
+                              "0"
+                            )}-${String(selectedDate.month + 1).padStart(
+                              2,
+                              "0"
+                            )}-${selectedDate.year}`
+                          ]
+                        )
                       : {}
                   }
                 />
