@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const daysOfWeek = {
   short: ["S", "M", "T", "W", "T", "F", "S"],
@@ -28,9 +28,18 @@ export const MonthlyCalendar = ({
 }) => {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState({
-    month: today.getMonth(),
-    year: today.getFullYear(),
+    month: selectedDate?.month ?? today.getMonth(),
+    year: selectedDate?.year ?? today.getFullYear(),
   });
+
+  useEffect(() => {
+    if (selectedDate) {
+      setCurrentDate({
+        month: selectedDate.month,
+        year: selectedDate.year,
+      });
+    }
+  }, [selectedDate]);
 
   const formatDateKey = (day, month, year) => {
     const paddedDay = day.toString().padStart(2, "0");

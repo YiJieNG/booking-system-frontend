@@ -1,44 +1,28 @@
 import React, { useState } from "react";
-import { CheckCircle2, AlertTriangle, Trash2 } from "lucide-react";
-import axios from "axios";
+import { AlertTriangle, Calendar, CheckCircle2 } from "lucide-react";
+import moment from "moment";
 import { useRouter } from "next/navigation";
 
-const cancelBooking = async (refNumber) => {
-  try {
-    const response = await axios.delete(
-      "http://127.0.0.1:5000/api/cancelBooking",
-      {
-        params: {
-          ref_num: refNumber,
-        },
-      }
-    );
-    return response;
-  } catch (err) {
-    console.error("Error deleting data:", err);
-    throw err;
-  }
-};
-
-export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
+export const ConfirmUpdate = ({
+  currentDate,
+  currentTime,
+  newDate,
+  newTime,
+  onConfirm,
+  onClose,
+  isSubmitting,
+  error,
+}) => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState(null);
   const router = useRouter();
 
-  const handleCancelBooking = async () => {
-    setIsSubmitting(true);
+  const handleConfirmUpdate = async () => {
     try {
-      const response = await cancelBooking(refNumber);
+      await onConfirm();
       setIsSuccess(true);
     } catch (error) {
-      console.error("Error cancelling booking:", error);
-      setErrors((prev) => ({
-        ...prev,
-        cancel: "Failed to cancel booking. Please try again.",
-      }));
-    } finally {
-      setIsSubmitting(false);
+      // Error handling is already managed by the parent component
+      console.error("Error updating booking:", error);
     }
   };
 
@@ -53,19 +37,20 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
 
         <div className="px-5 py-8 sm:px-8 border-b border-[--blue3]">
           <h2 className="text-2xl font-bold text-center mb-4">
-            Booking Deleted!
+            Booking Updated!
           </h2>
           <p className="text-[--text-dark] text-center text-lg">
-            Your session has been successfully cancelled.
+            Your session has been successfully rescheduled to{" "}
+            {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00
           </p>
         </div>
 
         <div className="px-5 py-6 sm:px-8">
           <button
             onClick={() => router.push("/")}
-            className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
+            className="w-full bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--green] border-[--blue2] hover:border-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
           >
-            Return to HomePage
+            Return to Home
           </button>
         </div>
       </div>
@@ -76,7 +61,7 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
     <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl relative overflow-hidden">
       <div className="w-full rounded-t-2xl bg-[--blue1] px-5 pt-6 sm:px-8 sm:pt-6 border-b border-[--blue3]">
         <div className="mb-4 flex w-full items-center justify-between">
-          <h2 className="text-2xl font-bold">Cancel Booking</h2>
+          <h2 className="text-2xl font-bold">Update Booking</h2>
           <button
             onClick={onClose}
             className="rounded-lg border border-[--blue3] bg-[--blue2] p-2 text-[--text-dark] hover:bg-[--green] transition-colors duration-200"
@@ -102,24 +87,37 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
         <div className="flex flex-col items-center justify-center mb-6">
           <AlertTriangle className="w-16 h-16 text-[--text-hover] mb-4" />
         </div>
-        <div className="bg-[--blue2] rounded-lg p-4">
+        <div className="bg-[--blue2] rounded-lg p-4 space-y-4">
           <p className="text-lg font-medium text-[--text-hover]">
-            Are you sure you want to cancel this booking?
+            Are you sure you want to update this booking?
           </p>
+          <div className="space-y-2">
+            <p className="text-sm text-[--text-dark]">
+              From: {moment(currentDate).format("MMMM D, YYYY")} at{" "}
+              {currentTime}
+            </p>
+            <p className="text-sm text-[--text-dark]">
+              To: {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00
+            </p>
+          </div>
         </div>
-        {errors?.cancel && (
-          <p className="mt-4 text-red-600 text-center">{errors.cancel}</p>
-        )}
+        {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 px-5 py-6 sm:px-8">
+      <div className="grid grid-cols-2 gap-4 px-5 py-6 sm:px-8">
         <button
-          onClick={handleCancelBooking}
-          disabled={isSubmitting}
-          className="w-full py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-red-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg flex items-center justify-center gap-2"
+          onClick={onClose}
+          className="py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-[--blue3] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg"
         >
-          <Trash2 className="w-5 h-5" />
-          {isSubmitting ? "Cancelling..." : "Cancel Booking"}
+          Cancel
+        </button>
+        <button
+          onClick={handleConfirmUpdate}
+          disabled={isSubmitting}
+          className="py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-[--green] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg flex items-center justify-center gap-2"
+        >
+          <Calendar className="w-5 h-5" />
+          {isSubmitting ? "Updating..." : "Update"}
         </button>
       </div>
     </div>
