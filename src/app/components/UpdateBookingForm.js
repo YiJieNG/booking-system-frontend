@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MonthlyCalendar } from "./MonthlyCalendar";
 import { TimeSlotSelector } from "./TimeSlotSelector";
+import { ConfirmUpdate } from "./ConfirmUpdate";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import moment from "moment";
@@ -24,6 +25,7 @@ const UpdateBookingForm = ({
   const [slotsData, setSlotsData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [currentMonth, setCurrentMonth] = useState({
     month: initialDate.getMonth(),
     year: initialDate.getFullYear(),
@@ -74,14 +76,10 @@ const UpdateBookingForm = ({
     const dateString = moment(dateObject).utcOffset(0, true).format();
     setSelectedTime(time);
     setSelectedDateString(dateString);
+    setShowConfirmModal(true); // Show confirmation modal when time is selected
   };
 
-  const handleSubmit = async () => {
-    if (!selectedDate || !selectedTime) {
-      setError("Please select both date and time");
-      return;
-    }
-
+  const handleConfirmUpdate = async () => {
     setIsLoading(true);
     setError(null);
 
@@ -197,6 +195,28 @@ const UpdateBookingForm = ({
           )}
         </div>
       </div>
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="max-w-lg w-full mx-4">
+            <ConfirmUpdate
+              currentDate={currentDate}
+              currentTime={currentTime}
+              newDate={
+                new Date(
+                  selectedDate.year,
+                  selectedDate.month,
+                  selectedDate.day
+                )
+              }
+              newTime={selectedTime}
+              onConfirm={handleConfirmUpdate}
+              onClose={() => setShowConfirmModal(false)}
+              isSubmitting={isLoading}
+              error={error}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
