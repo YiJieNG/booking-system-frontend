@@ -41,7 +41,7 @@ export const ConfirmUpdate = ({
           </h2>
           <p className="text-[--text-dark] text-center text-lg">
             Your session has been successfully rescheduled to{" "}
-            {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00:00.
+            {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export const ConfirmUpdate = ({
             onClick={() => router.push("/")}
             className="w-full bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--green] border-[--blue2] hover:border-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
           >
-            Return to Your Booking
+            Return to Home
           </button>
         </div>
       </div>
@@ -97,7 +97,7 @@ export const ConfirmUpdate = ({
               {currentTime}
             </p>
             <p className="text-sm text-[--text-dark]">
-              To: {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00:00
+              To: {moment(newDate).format("MMMM D, YYYY")} at {newTime}:00
             </p>
           </div>
         </div>
