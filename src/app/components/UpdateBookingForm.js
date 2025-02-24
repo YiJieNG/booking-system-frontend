@@ -88,7 +88,7 @@ const UpdateBookingForm = ({
       const dateObject = new Date(
         selectedDate.year,
         selectedDate.month,
-        selectedDate.day
+        selectedDate.day + 1
       );
 
       // Format date as YYYY-MM-DD
@@ -96,7 +96,8 @@ const UpdateBookingForm = ({
 
       // Format time as HH:MM:SS
       const formattedTime = `${selectedTime}:00`;
-
+      console.log("Updating:", formattedDate);
+      console.log("Updating:", formattedTime);
       const response = await axios.put(
         "http://127.0.0.1:5000/api/updateBooking",
         {
