@@ -352,11 +352,11 @@ const Dashboard = () => {
                   type="text"
                   placeholder="Date (YYYY-MM-DD)"
                   className="p-2 border rounded"
-                  value={editBooking?.date || ""}
+                  value={editBooking?.bkg_date || ""}
                   onChange={(e) =>
                     setEditBooking({
                       ...editBooking,
-                      date: e.target.value,
+                      bkg_date: e.target.value,
                     })
                   }
                 />
@@ -364,11 +364,23 @@ const Dashboard = () => {
                   type="text"
                   placeholder="Time (HH:MM)"
                   className="p-2 border rounded"
-                  value={editBooking?.time || ""}
+                  value={editBooking?.bkg_time || ""}
                   onChange={(e) =>
                     setEditBooking({
                       ...editBooking,
-                      time: e.target.value,
+                      bkg_time: e.target.value,
+                    })
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="Table Number"
+                  className="p-2 border rounded"
+                  value={editBooking?.table_num || ""}
+                  onChange={(e) =>
+                    setEditBooking({
+                      ...editBooking,
+                      table_num: e.target.value,
                     })
                   }
                 />
