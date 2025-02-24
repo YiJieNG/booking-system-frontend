@@ -6,7 +6,7 @@ import axios from "axios";
 
 // Configure axios base URL
 // const api = axios.create({
-//   baseURL: 'http://localhost:5000'  // Assuming your Flask backend runs on port 5000
+//   baseURL: 'http://localhost:5000'
 // });
 
 export default function Dashboard() {
@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [filteredBookings, setFilteredBookings] = useState([]);
   const [filters, setFilters] = useState({
     date: "",
+    time: "",
     familyName: "",
     refNumber: "",
   });
@@ -45,6 +46,12 @@ export default function Dashboard() {
       );
     }
 
+    if (filters.time) {
+      filtered = filtered.filter((booking) =>
+        booking.bkg_time.includes(filters.time)
+      );
+    }
+
     if (filters.familyName) {
       filtered = filtered.filter((booking) =>
         booking.family_name
@@ -62,6 +69,17 @@ export default function Dashboard() {
     setFilteredBookings(filtered);
   };
 
+  const resetFilters = () => {
+    setFilters({
+      date: "",
+      time: "",
+      familyName: "",
+      refNumber: "",
+    });
+    setFilteredBookings(bookings);
+  };
+
+  // To fix
   const handleDelete = async (refNum) => {
     if (window.confirm("Are you sure you want to cancel this booking?")) {
       try {
@@ -73,6 +91,7 @@ export default function Dashboard() {
     }
   };
 
+  // To fix
   const handleUpdate = async (updatedBooking) => {
     try {
       await axios.put("/api/updateBooking", updatedBooking);
@@ -91,13 +110,20 @@ export default function Dashboard() {
         </h1>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <input
             type="text"
             placeholder="Filter by date (YYYY-MM-DD)"
             className="p-2 border rounded"
             value={filters.date}
             onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Filter by time (HH-MM)"
+            className="p-2 border rounded"
+            value={filters.time}
+            onChange={(e) => setFilters({ ...filters, time: e.target.value })}
           />
           <input
             type="text"
@@ -118,12 +144,21 @@ export default function Dashboard() {
             }
           />
         </div>
-        <button
-          onClick={handleFilter}
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-6 hover:bg-blue-600"
-        >
-          Apply Filters
-        </button>
+        <div className="grid grid-cols-2 md:grid-cols-8 gap-4 mb-6">
+          <button
+            onClick={handleFilter}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Apply Filters
+          </button>
+
+          <button
+            onClick={resetFilters}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Reset Filters
+          </button>
+        </div>
 
         {/* Bookings Table */}
         <div className="overflow-x-auto">
