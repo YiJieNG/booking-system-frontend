@@ -73,7 +73,6 @@ const UpdateBookingForm = ({
       selectedDate.day,
       time
     );
-    console.log(time);
     const dateString = moment(dateObject).utcOffset(0, true).format();
     setSelectedTime(time);
     setSelectedDateString(dateString);
@@ -132,8 +131,6 @@ const UpdateBookingForm = ({
       currentDateObj.getFullYear() === selectedDate.year;
 
     if (isCurrentDate) {
-      console.log(currentTime);
-      console.log(slots);
       return Object.fromEntries(
         Object.entries(slots).filter(([time]) => time !== currentTime)
       );
