@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ConfirmDelete } from "./ConfirmDelete";
+import UpdateBookingForm from "./UpdateBookingForm";
 
 export const BookingDetails = ({
   bkg_date,
@@ -11,7 +12,8 @@ export const BookingDetails = ({
   table_num,
   redirectUser,
 }) => {
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   return (
     <div className="rounded-2xl bg-[--blue1] text-[--text-dark] shadow-xl mx-auto relative overflow-hidden w-full lg:w-1/2">
@@ -19,9 +21,9 @@ export const BookingDetails = ({
         <div className="mb-4 flex w-full flex-wrap items-center justify-between gap-1">
           <div>
             <h2 className="text-lg font-medium text-[--text-hover] mb-2">
-              Welcome back,
+              {`Welcome back, ${family_name}`}
             </h2>
-            <h2 className="text-2xl font-bold">{family_name}</h2>
+            <h2 className="text-2xl font-bold">Your Booking Details</h2>
           </div>
           <div className="rounded-lg border border-[--blue3] bg-[--blue2] px-3 py-1.5 text-md font-medium italic">
             Ref No. {refNumber}
@@ -31,7 +33,7 @@ export const BookingDetails = ({
 
       <div className="px-5 py-8 sm:px-8 border-b border-[--blue3]">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--green] transition-colors">
+          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--blue3] transition-colors">
             <div className="flex items-center mb-2">
               <svg
                 className="w-5 h-5 mr-2"
@@ -53,7 +55,7 @@ export const BookingDetails = ({
             <p className="text-xl font-semibold">{bkg_date}</p>
           </div>
 
-          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--green] transition-colors">
+          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--blue3] transition-colors">
             <div className="flex items-center mb-2">
               <svg
                 className="w-5 h-5 mr-2"
@@ -75,7 +77,7 @@ export const BookingDetails = ({
             <p className="text-xl font-semibold">{bkg_time}</p>
           </div>
 
-          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--green] transition-colors">
+          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--blue3] transition-colors">
             <div className="flex items-center mb-2">
               <svg
                 className="w-5 h-5 mr-2"
@@ -103,7 +105,7 @@ export const BookingDetails = ({
             <p className="text-lg font-semibold">{table_num}</p>
           </div>
 
-          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--green] transition-colors">
+          <div className="bg-[--blue2] rounded-lg p-4 hover:bg-[--blue3] transition-colors">
             <div className="flex items-center mb-2">
               <svg
                 className="w-5 h-5 mr-2"
@@ -130,27 +132,29 @@ export const BookingDetails = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-5 py-6 sm:px-8">
         <button
           type="button"
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowUpdateModal(true)}
           className="w-full py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-[--green] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg flex items-center justify-center gap-2"
         >
           <svg
-            className="w-5 h-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-5 h-5"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-            />
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
-          Cancel Booking
+          Date/Time Change
         </button>
         <button
           type="button"
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowDeleteModal(true)}
           className="w-full py-3 px-4 rounded-lg border border-[--blue3] bg-[--blue2] text-[--text-dark] hover:bg-red-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 font-semibold text-lg flex items-center justify-center gap-2"
         >
           <svg
@@ -170,12 +174,26 @@ export const BookingDetails = ({
         </button>
       </div>
 
-      {showModal && (
+      {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
           <div className="max-w-lg w-full">
             <ConfirmDelete
               refNumber={refNumber}
-              onClose={() => setShowModal(false)}
+              onClose={() => setShowDeleteModal(false)}
+              redirectUser={redirectUser}
+            />
+          </div>
+        </div>
+      )}
+
+      {showUpdateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+          <div className="max-w-5xl w-full">
+            <UpdateBookingForm
+              currentDate={bkg_date}
+              currentTime={bkg_time}
+              refNumber={refNumber}
+              onClose={() => setShowUpdateModal(false)}
               redirectUser={redirectUser}
             />
           </div>
