@@ -63,9 +63,9 @@ export const ConfirmDelete = ({ refNumber, onClose, redirectUser }) => {
         <div className="px-5 py-6 sm:px-8">
           <button
             onClick={() => router.push("/")}
-            className="mt-4 w-full max-w-xs bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
+            className="w-full bg-[--blue2] text-[--text-dark] py-2 px-4 rounded-md hover:bg-[--green] border-[--blue2] hover:border-[--blue3] focus:outline-none focus:ring-2 focus:ring-[--blue3] focus:ring-offset-2 transition-colors duration-200"
           >
-            Return to HomePage
+            Return to Home
           </button>
         </div>
       </div>

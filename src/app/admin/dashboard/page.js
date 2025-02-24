@@ -4,11 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-// Configure axios base URL
-// const api = axios.create({
-//   baseURL: 'http://localhost:5000'
-// });
-
 export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
@@ -20,6 +15,12 @@ export default function Dashboard() {
   });
   const [editBooking, setEditBooking] = useState(null);
   const [showEditDialog, setShowEditDialog] = useState(false);
+  const [sessionConfig, setSessionConfig] = useState({
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
+    slot_limit: 5,
+  });
+  const [configStatus, setConfigStatus] = useState("");
 
   useEffect(() => {
     fetchBookings();
@@ -34,6 +35,18 @@ export default function Dashboard() {
       setFilteredBookings(response.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
+    }
+  };
+
+  const handleSessionConfig = async () => {
+    try {
+      await axios.post("http://127.0.0.1:5000/api/bkgSession", sessionConfig);
+      setConfigStatus("Booking session configured successfully!");
+      setTimeout(() => setConfigStatus(""), 3000);
+    } catch (error) {
+      console.error("Error configuring booking session:", error);
+      setConfigStatus("Error configuring booking session. Please try again.");
+      setTimeout(() => setConfigStatus(""), 3000);
     }
   };
 
@@ -79,7 +92,6 @@ export default function Dashboard() {
     setFilteredBookings(bookings);
   };
 
-  // To fix
   const handleDelete = async (refNum) => {
     if (window.confirm("Are you sure you want to cancel this booking?")) {
       try {
@@ -93,7 +105,6 @@ export default function Dashboard() {
     }
   };
 
-  // To fix
   const handleUpdate = async (updatedBooking) => {
     try {
       await axios.put(
@@ -113,6 +124,84 @@ export default function Dashboard() {
         <h1 className="text-2xl font-bold mb-6">
           Booking Management Dashboard
         </h1>
+
+        {/* Session Configuration */}
+        <div className="mb-8 bg-gray-50 p-4 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">
+            Configure Booking Session
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Month
+              </label>
+              <input
+                type="number"
+                min="1"
+                max="12"
+                className="p-2 border rounded w-full"
+                value={sessionConfig.month}
+                onChange={(e) =>
+                  setSessionConfig({
+                    ...sessionConfig,
+                    month: parseInt(e.target.value),
+                  })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Year
+              </label>
+              <input
+                type="number"
+                min="2024"
+                className="p-2 border rounded w-full"
+                value={sessionConfig.year}
+                onChange={(e) =>
+                  setSessionConfig({
+                    ...sessionConfig,
+                    year: parseInt(e.target.value),
+                  })
+                }
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Slot Limit
+              </label>
+              <input
+                type="number"
+                min="1"
+                className="p-2 border rounded w-full"
+                value={sessionConfig.slot_limit}
+                onChange={(e) =>
+                  setSessionConfig({
+                    ...sessionConfig,
+                    slot_limit: parseInt(e.target.value),
+                  })
+                }
+              />
+            </div>
+          </div>
+          <button
+            onClick={handleSessionConfig}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
+            Configure Session
+          </button>
+          {configStatus && (
+            <p
+              className={`mt-2 ${
+                configStatus.includes("Error")
+                  ? "text-red-500"
+                  : "text-green-500"
+              }`}
+            >
+              {configStatus}
+            </p>
+          )}
+        </div>
 
         {/* Filters */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
