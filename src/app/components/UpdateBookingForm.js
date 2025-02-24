@@ -125,17 +125,41 @@ const UpdateBookingForm = ({
     if (!slots) return {};
 
     const currentDateObj = new Date(currentDate);
+    const now = new Date();
+
     const isCurrentDate =
       currentDateObj.getDate() === selectedDate.day &&
       currentDateObj.getMonth() === selectedDate.month &&
       currentDateObj.getFullYear() === selectedDate.year;
 
-    if (isCurrentDate) {
-      return Object.fromEntries(
-        Object.entries(slots).filter(([time]) => time !== currentTime)
-      );
-    }
-    return slots;
+    const isToday =
+      now.getDate() === selectedDate.day &&
+      now.getMonth() === selectedDate.month &&
+      now.getFullYear() === selectedDate.year;
+
+    return Object.fromEntries(
+      Object.entries(slots).filter(([time]) => {
+        // First filter out the current booking time if it's the current date
+        if (isCurrentDate && time === currentTime) {
+          return false;
+        }
+
+        // Then filter out passed times if it's today
+        if (isToday) {
+          const [hours, minutes] = time.split(":").map(Number);
+          const timeToCheck = new Date();
+          timeToCheck.setHours(hours, minutes, 0);
+
+          // Add a small buffer (e.g., 5 minutes) to prevent booking times that are too close
+          const bookingBuffer = 5; // minutes
+          const nowPlusBuffer = new Date(now.getTime() + bookingBuffer * 60000);
+
+          return timeToCheck > nowPlusBuffer;
+        }
+
+        return true;
+      })
+    );
   };
 
   const monthNames = [

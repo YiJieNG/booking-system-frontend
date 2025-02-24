@@ -40,6 +40,34 @@ export default function Booking() {
     };
   });
 
+  const filterAvailableSlots = (slots) => {
+    if (!slots) return {};
+
+    const now = new Date();
+    const isToday =
+      selectedDate &&
+      now.getDate() === selectedDate.day &&
+      now.getMonth() === selectedDate.month &&
+      now.getFullYear() === selectedDate.year;
+
+    if (!isToday) return slots;
+
+    // Filter slots for today
+    return Object.fromEntries(
+      Object.entries(slots).filter(([time]) => {
+        const [hours, minutes] = time.split(":").map(Number);
+        const timeToCheck = new Date();
+        timeToCheck.setHours(hours, minutes, 0);
+
+        // Add a 5-minute buffer for minimum booking time
+        const bookingBuffer = 5; // minutes
+        const nowPlusBuffer = new Date(now.getTime() + bookingBuffer * 60000);
+
+        return timeToCheck > nowPlusBuffer;
+      })
+    );
+  };
+
   // Fetch slots data when month changes
   const fetchSlotsData = async (month, year) => {
     setIsLoading(true);
@@ -149,11 +177,17 @@ export default function Booking() {
                 onSelectTime={handleTimeSelection}
                 availableSlots={
                   selectedDate
-                    ? slotsData[
-                        `${String(selectedDate.day).padStart(2, "0")}-${String(
-                          selectedDate.month + 1
-                        ).padStart(2, "0")}-${selectedDate.year}`
-                      ]
+                    ? filterAvailableSlots(
+                        slotsData[
+                          `${String(selectedDate.day).padStart(
+                            2,
+                            "0"
+                          )}-${String(selectedDate.month + 1).padStart(
+                            2,
+                            "0"
+                          )}-${selectedDate.year}`
+                        ]
+                      )
                     : {}
                 }
               />
