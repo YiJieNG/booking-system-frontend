@@ -83,7 +83,9 @@ export default function Dashboard() {
   const handleDelete = async (refNum) => {
     if (window.confirm("Are you sure you want to cancel this booking?")) {
       try {
-        await axios.delete(`/api/cancelBooking?ref_num=${refNum}`);
+        await axios.delete(
+          `http://127.0.0.1:5000/api/cancelBooking?ref_num=${refNum}`
+        );
         fetchBookings();
       } catch (error) {
         console.error("Error canceling booking:", error);
@@ -94,7 +96,10 @@ export default function Dashboard() {
   // To fix
   const handleUpdate = async (updatedBooking) => {
     try {
-      await axios.put("/api/updateBooking", updatedBooking);
+      await axios.put(
+        "http://127.0.0.1:5000/api/updateBooking",
+        updatedBooking
+      );
       setShowEditDialog(false);
       fetchBookings();
     } catch (error) {
